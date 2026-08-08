@@ -16,25 +16,23 @@
   };
 
   function render() {
-    const codes = window.getVisibleGrades ? window.getVisibleGrades() : Object.entries(window.ACCESS_CODES || {});
+    const codes = window.getVisibleGrades ? window.getVisibleGrades() : Object.entries(window.ACCESS_CODES || {}).map(([k, v]) => ({ code: k, ...v }));
     grid.innerHTML = "";
     order.forEach(gradeId => {
-      const codeEntry = codes.find(([k, v]) => v.grade === gradeId) || codes.find(v => v.grade === gradeId);
-      if (!codeEntry) return;
-      const code = Array.isArray(codeEntry) ? codeEntry[0] : codeEntry.code;
-      const meta = Array.isArray(codeEntry) ? codeEntry[1] : codeEntry;
+      const entry = codes.find(v => v.grade === gradeId);
+      if (!entry) return;
       const card = document.createElement("div");
       card.className = "course-card";
       card.innerHTML = `
         <div class="icon">${icons[gradeId] || "📘"}</div>
-        <h3>${meta.label}</h3>
-        <p class="subject">${meta.subject}</p>
+        <h3>${entry.label}</h3>
+        <p class="subject">${entry.subject}</p>
         <div class="meta">
           <span class="badge badge-ready">15 preguntas</span>
           <span style="font-size: 11px; color: var(--muted);">30 min</span>
         </div>
       `;
-      card.addEventListener("click", () => openAccess(gradeId, meta));
+      card.addEventListener("click", () => openAccess(gradeId, entry));
       grid.appendChild(card);
     });
   }
@@ -146,8 +144,54 @@
 
   document.getElementById("link-profesor").addEventListener("click", (e) => {
     e.preventDefault();
-    showProfesorPanel();
+    showLoginProfesor();
   });
+
+  function showLoginProfesor() {
+    const html = `
+      <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 16px;">
+        <div style="background: white; border-radius: 20px; padding: 32px; max-width: 420px; width: 100%;">
+          <h2 style="color: var(--secondary); margin-bottom: 8px;">🔐 Acceso Profesor</h2>
+          <p style="color: var(--muted); margin-bottom: 20px; font-size: 14px;">Ingresa la contraseña para ver los resultados de los estudiantes.</p>
+
+          <div class="field">
+            <label>Contraseña</label>
+            <input type="password" id="prof-password" placeholder="••••••••" autocomplete="off" autofocus>
+          </div>
+
+          <div id="login-error" class="alert alert-error hidden"></div>
+
+          <div style="display: flex; gap: 12px; margin-top: 16px;">
+            <button class="btn btn-secondary" onclick="document.getElementById('modal').remove()">Cancelar</button>
+            <button class="btn btn-primary" id="btn-login" style="flex: 1;">Entrar →</button>
+          </div>
+        </div>
+      </div>
+    `;
+    const wrap = document.createElement("div");
+    wrap.id = "modal";
+    wrap.innerHTML = html;
+    document.body.appendChild(wrap);
+
+    document.getElementById("btn-login").addEventListener("click", tryLogin);
+    document.getElementById("prof-password").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") tryLogin();
+    });
+
+    function tryLogin() {
+      const pwd = document.getElementById("prof-password").value;
+      if (pwd === window.PROFESOR_PASSWORD) {
+        document.getElementById("modal").remove();
+        showProfesorPanel();
+      } else {
+        const err = document.getElementById("login-error");
+        err.textContent = "Contraseña incorrecta";
+        err.classList.remove("hidden");
+        document.getElementById("prof-password").value = "";
+        document.getElementById("prof-password").focus();
+      }
+    }
+  }
 
   function showProfesorPanel() {
     const collected = [];

@@ -14,6 +14,8 @@ const ACCESS_CODES = {
   "AMR-TEST-0001": { grade: "test_rapido",           label: "🧪 Examen de Prueba",          subject: "Solo para pruebas del sistema", hidden: true }
 };
 
+const PROFESOR_PASSWORD = "Samprs258";
+
 function lookupCode(code) {
   if (!code) return null;
   const key = String(code).trim().toUpperCase();
@@ -40,6 +42,10 @@ if (typeof window !== "undefined") {
   window.getGradeMeta = getGradeMeta;
 }
 
+if (typeof window !== "undefined") {
+  window.PROFESOR_PASSWORD = PROFESOR_PASSWORD;
+}
+
 if (typeof module !== "undefined") {
-  module.exports = { ACCESS_CODES, lookupCode, getGradeMeta };
+  module.exports = { ACCESS_CODES, lookupCode, getGradeMeta, getVisibleGrades, PROFESOR_PASSWORD };
 }
