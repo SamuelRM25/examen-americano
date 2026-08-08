@@ -10,7 +10,8 @@ const ACCESS_CODES = {
   "AMR-QP-BZIG": { grade: "quinto_perito",          label: "Quinto Perito Contador",  subject: "Computación II (Tablas dinámicas)" },
   "AMR-SP-RATH": { grade: "sexto_pc",               label: "Sexto Perito Contador",   subject: "Computación III (Excel avanzado)" },
   "AMR-CS-ZWYP": { grade: "cuarto_secretariado",    label: "Cuarto Secretariado",     subject: "Computación I (Archivos, OCR)" },
-  "AMR-QB-KZXY": { grade: "quinto_bachillerato",    label: "Quinto Bachillerato en Computación", subject: "Computación II (Programación Web)" }
+  "AMR-QB-KZXY": { grade: "quinto_bachillerato",    label: "Quinto Bachillerato en Computación", subject: "Computación II (Programación Web)" },
+  "AMR-TEST-0001": { grade: "test_rapido",           label: "🧪 Examen de Prueba",          subject: "Solo para pruebas del sistema", hidden: true }
 };
 
 function lookupCode(code) {
@@ -25,6 +26,12 @@ function getGradeMeta(gradeId) {
     if (v.grade === gradeId) return { code: k, ...v };
   }
   return null;
+}
+
+function getVisibleGrades() {
+  return Object.entries(ACCESS_CODES)
+    .filter(([_, v]) => !v.hidden)
+    .map(([k, v]) => ({ code: k, ...v }));
 }
 
 if (typeof window !== "undefined") {

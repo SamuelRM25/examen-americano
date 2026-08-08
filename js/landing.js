@@ -16,12 +16,13 @@
   };
 
   function render() {
-    const codes = window.ACCESS_CODES;
+    const codes = window.getVisibleGrades ? window.getVisibleGrades() : Object.entries(window.ACCESS_CODES || {});
     grid.innerHTML = "";
     order.forEach(gradeId => {
-      const codeEntry = Object.entries(codes).find(([k, v]) => v.grade === gradeId);
+      const codeEntry = codes.find(([k, v]) => v.grade === gradeId) || codes.find(v => v.grade === gradeId);
       if (!codeEntry) return;
-      const [code, meta] = codeEntry;
+      const code = Array.isArray(codeEntry) ? codeEntry[0] : codeEntry.code;
+      const meta = Array.isArray(codeEntry) ? codeEntry[1] : codeEntry;
       const card = document.createElement("div");
       card.className = "course-card";
       card.innerHTML = `
