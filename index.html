@@ -246,6 +246,85 @@ a { color: var(--rust-deep); text-underline-offset: 3px; }
   text-transform: uppercase;
 }
 
+/* Filtros de módulo */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: var(--s-5);
+  margin-bottom: var(--s-4);
+}
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 8px 16px;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+}
+.filter-pill:hover { background: var(--cream); color: var(--ink); }
+.filter-pill[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.filter-pill[aria-pressed="true"] .filter-pill__count {
+  color: var(--mustard);
+}
+.filter-pill__count {
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+
+/* Cabecera de módulo (dentro del grid) */
+.module-head {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: var(--s-4) var(--s-5);
+  margin-top: -1px;
+  background: var(--ink);
+  color: var(--paper);
+  border-top: 1px solid var(--ink);
+}
+.module-head:first-child { margin-top: 0; border-top: none; }
+.module-head__num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--mustard);
+  text-transform: uppercase;
+}
+.module-head__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.4rem;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+.module-head__title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--mustard);
+}
+.module-head__desc {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: rgba(239, 233, 220, 0.7);
+  letter-spacing: 0.04em;
+}
+.module-head[hidden] { display: none !important; }
+
 /* Grid de lecciones — 3 columnas, layout 3+2 */
 .lessons {
   display: grid;
@@ -725,7 +804,7 @@ a { color: var(--rust-deep); text-underline-offset: 3px; }
 
   <section class="hero">
     <div>
-      <p class="hero__eyebrow">Curso de introducción · 5 lecciones</p>
+      <p class="hero__eyebrow">Curso de introducción · 3 módulos · 17 lecciones</p>
       <h1 class="hero__title">
         Construye la web,<br />
         una <em>etiqueta</em><br />
@@ -743,15 +822,17 @@ a { color: var(--rust-deep); text-underline-offset: 3px; }
       </div>
       <div>
         <dt>Duración</dt>
-        <dd>5 sesiones · 45 min c/u</dd>
+        <dd>17 sesiones · 45 min c/u</dd>
       </div>
     </dl>
   </section>
 
   <div class="section-head">
     <h2>Catálogo de ejercicios</h2>
-    <span class="section-head__num">Tabla 01 / Lecciones</span>
+    <span class="section-head__num">Tabla 01 / 17 lecciones</span>
   </div>
+
+  <div class="filters" id="filters" role="group" aria-label="Filtrar por módulo"></div>
 
   <div class="lessons" id="lessonsGrid"><!-- inyectado por JS --></div>
 
@@ -881,6 +962,112 @@ const schematics = {
     <line x1="28" y1="33" x2="46" y2="33"/>
     <rect x="18" y="42" width="6" height="6" stroke-dasharray="2 2"/>
     <line x1="28" y1="45" x2="46" y2="45"/>
+  </svg>`,
+  6: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="8" y="14" width="22" height="16" rx="2"/>
+    <circle cx="14" cy="20" r="1.5" fill="currentColor"/>
+    <path d="M8 26 L18 20 L30 26"/>
+    <rect x="34" y="14" width="22" height="16" rx="2"/>
+    <circle cx="40" cy="20" r="1.5" fill="currentColor"/>
+    <path d="M34 26 L44 20 L56 26"/>
+    <path d="M30 22 L34 22"/>
+    <line x1="14" y1="38" x2="50" y2="38" stroke-dasharray="2 2"/>
+    <path d="M44 44 a4 4 0 1 0 8 0 a4 4 0 1 0 -8 0"/>
+    <path d="M12 44 a4 4 0 1 0 8 0 a4 4 0 1 0 -8 0"/>
+  </svg>`,
+  7: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="10" y="10" width="44" height="44" rx="2"/>
+    <line x1="10" y1="20" x2="54" y2="20"/>
+    <circle cx="16" cy="15" r="1" fill="currentColor"/>
+    <circle cx="20" cy="15" r="1" fill="currentColor"/>
+    <rect x="16" y="26" width="32" height="6" rx="1"/>
+    <rect x="16" y="36" width="20" height="6" rx="1"/>
+    <rect x="38" y="46" width="10" height="6" rx="1"/>
+  </svg>`,
+  8: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="10" y="8" width="44" height="6"/>
+    <rect x="10" y="20" width="44" height="28"/>
+    <line x1="10" y1="26" x2="54" y2="26" stroke-dasharray="2 2"/>
+    <rect x="14" y="30" width="14" height="14"/>
+    <rect x="32" y="30" width="18" height="14"/>
+    <rect x="10" y="52" width="44" height="4"/>
+  </svg>`,
+  9: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="10" y="10" width="44" height="44"/>
+    <line x1="10" y1="20" x2="54" y2="20"/>
+    <line x1="10" y1="34" x2="54" y2="34"/>
+    <line x1="10" y1="44" x2="54" y2="44"/>
+    <line x1="22" y1="20" x2="22" y2="54"/>
+    <line x1="36" y1="20" x2="36" y2="54"/>
+    <line x1="46" y1="20" x2="46" y2="54"/>
+    <rect x="10" y="10" width="44" height="6" fill="currentColor" fill-opacity="0.15"/>
+  </svg>`,
+  10: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="8" y="8" width="48" height="48" stroke-dasharray="3 3"/>
+    <rect x="14" y="14" width="36" height="36"/>
+    <rect x="20" y="20" width="24" height="24" fill="currentColor" fill-opacity="0.15"/>
+    <line x1="20" y1="14" x2="20" y2="8" stroke-dasharray="2 2"/>
+    <line x1="44" y1="14" x2="44" y2="8" stroke-dasharray="2 2"/>
+    <line x1="20" y1="50" x2="20" y2="56" stroke-dasharray="2 2"/>
+    <line x1="44" y1="50" x2="44" y2="56" stroke-dasharray="2 2"/>
+  </svg>`,
+  11: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="8" y="20" width="48" height="24"/>
+    <rect x="12" y="24" width="10" height="16" fill="currentColor" fill-opacity="0.15"/>
+    <rect x="26" y="24" width="10" height="16" fill="currentColor" fill-opacity="0.15"/>
+    <rect x="40" y="24" width="12" height="16" fill="currentColor" fill-opacity="0.15"/>
+    <line x1="14" y1="14" x2="14" y2="20" stroke-dasharray="2 2"/>
+    <line x1="50" y1="14" x2="50" y2="20" stroke-dasharray="2 2"/>
+    <line x1="14" y1="44" x2="14" y2="50" stroke-dasharray="2 2"/>
+    <line x1="50" y1="44" x2="50" y2="50" stroke-dasharray="2 2"/>
+  </svg>`,
+  12: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="8" y="8" width="48" height="48"/>
+    <line x1="24" y1="8" x2="24" y2="56"/>
+    <line x1="40" y1="8" x2="40" y2="56"/>
+    <line x1="8" y1="24" x2="56" y2="24"/>
+    <line x1="8" y1="40" x2="56" y2="40"/>
+    <rect x="9" y="9" width="14" height="14" fill="currentColor" fill-opacity="0.2"/>
+    <rect x="25" y="25" width="14" height="14" fill="currentColor" fill-opacity="0.2"/>
+    <rect x="41" y="41" width="14" height="14" fill="currentColor" fill-opacity="0.2"/>
+  </svg>`,
+  13: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="20" y="20" width="24" height="24" rx="2"/>
+    <path d="M32 20 a12 12 0 0 1 12 12" stroke-dasharray="2 2"/>
+    <path d="M32 8 a24 24 0 0 1 24 24" stroke-dasharray="2 2"/>
+    <path d="M14 50 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0"/>
+    <path d="M44 50 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0"/>
+    <line x1="20" y1="50" x2="50" y2="50"/>
+  </svg>`,
+  14: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M32 8 L52 24 L32 40 L12 24 Z"/>
+    <text x="32" y="28" text-anchor="middle" font-family="monospace" font-size="10" fill="currentColor" stroke="none">¿?</text>
+    <line x1="32" y1="40" x2="32" y2="48"/>
+    <line x1="20" y1="56" x2="44" y2="56"/>
+  </svg>`,
+  15: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="8" y="14" width="48" height="36" rx="2"/>
+    <line x1="8" y1="24" x2="56" y2="24"/>
+    <rect x="14" y="30" width="36" height="6" rx="1"/>
+    <rect x="14" y="40" width="36" height="6" rx="1"/>
+    <path d="M50 30 L52 32 L54 30" />
+    <path d="M50 40 L52 42 L54 40" />
+    <circle cx="48" cy="19" r="1" fill="currentColor"/>
+  </svg>`,
+  16: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <ellipse cx="32" cy="14" rx="20" ry="6"/>
+    <path d="M12 14 L12 50 a20 6 0 0 0 40 0 L52 14"/>
+    <path d="M12 32 a20 6 0 0 0 40 0"/>
+    <circle cx="42" cy="44" r="3" fill="currentColor"/>
+    <path d="M44 46 L48 50" />
+  </svg>`,
+  17: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="10" y="10" width="44" height="44" rx="2"/>
+    <rect x="16" y="16" width="32" height="6" rx="1"/>
+    <rect x="16" y="26" width="32" height="6" rx="1"/>
+    <rect x="16" y="36" width="20" height="6" rx="1"/>
+    <circle cx="50" cy="39" r="5" fill="currentColor"/>
+    <path d="M48 39 L50 41 L53 38" stroke="#efe9dc" stroke-width="1.6"/>
   </svg>`
 };
 
@@ -890,6 +1077,7 @@ const schematics = {
 const lessons = [
   {
     id: 1,
+    module: "html",
     num: "01",
     title: ["Tu primera ", {em: "página"}, ""],
     lede: "Aprende las etiquetas HTML básicas construyendo una pequeña tarjeta personal.",
@@ -921,6 +1109,7 @@ const lessons = [
   },
   {
     id: 2,
+    module: "css",
     num: "02",
     title: ["Dale ", {em: "estilo"}, " a tu página"],
     lede: "Pinta tu página con CSS: colores, fuentes, márgenes y el modelo de caja.",
@@ -984,6 +1173,7 @@ p, li {
   },
   {
     id: 3,
+    module: "js",
     num: "03",
     title: ["El botón que ", {em: "responde"}, ""],
     lede: "Tu primer JavaScript: detecta clics y cambia la página en respuesta.",
@@ -1038,6 +1228,7 @@ button:hover { background: #c04a2d; }`,
   },
   {
     id: 4,
+    module: "js",
     num: "04",
     title: ["El ", {em: "contador"}, ""],
     lede: "JavaScript con memoria: variables, funciones y actualización del DOM.",
@@ -1124,6 +1315,7 @@ function reiniciar() {
   },
   {
     id: 5,
+    module: "js",
     num: "05",
     title: ["Tu lista de ", {em: "tareas"}, ""],
     lede: "Arrays, bucles y render dinámico: tu primera mini-aplicación interactiva.",
@@ -1238,6 +1430,1251 @@ function completar(indice) {
 
 render();`
     }
+  },
+  {
+    id: 6,
+    module: "html",
+    num: "06",
+    title: ["Enlaces e ", {em: "imágenes"}, ""],
+    lede: "Conecta el mundo y muestra gráficos: a, img, href, src y alt.",
+    duration: "≈ 30 min",
+    level: "Inicial",
+    tags: [{t:"HTML", cls:""}],
+    description: "Una página sin enlaces es una isla. Hoy aprenderás a navegar entre páginas y a incrustar imágenes con sus textos alternativos.",
+    steps: [
+      { html: "El <strong>hipervínculo</strong> se crea con <code>&lt;a href=\"url\"&gt;texto&lt;/a&gt;</code>. <code>href</code> es la dirección de destino." },
+      { html: "Para abrir en una pestaña nueva añade <code>target=\"_blank\"</code> y por seguridad <code>rel=\"noopener\"</code>." },
+      { html: "Las imágenes usan <code>&lt;img src=\"url\" alt=\"descripción\"&gt;</code>. El atributo <code>alt</code> es obligatorio: describe la imagen para usuarios con discapacidad visual y para cuando la imagen no carga." },
+      { html: "Puedes usar una URL absoluta (<code>https://...</code>) o una ruta relativa (<code>img/foto.jpg</code>)." },
+      { html: "Envuelve la imagen con un <code>&lt;a&gt;</code> para convertirla en un enlace clickeable." }
+    ],
+    challenge: "Crea una lista de 3 sitios web favoritos (Wikipedia, MDN, YouTube) con sus enlaces y descripciones.",
+    starter: {
+      html: `<h1>Mis sitios favoritos</h1>
+<p>Una pequeña colección de lugares web que visito con frecuencia.</p>
+
+<ul class="favoritos">
+  <li>
+    <a href="https://es.wikipedia.org" target="_blank" rel="noopener">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/120px-Wikipedia-logo-v2.svg.png" alt="Logo de Wikipedia">
+      <strong>Wikipedia</strong>
+    </a>
+    <span>La enciclopedia libre que todos consultamos.</span>
+  </li>
+  <li>
+    <a href="https://developer.mozilla.org" target="_blank" rel="noopener">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/MDN_Web_Docs_logo.svg/120px-MDN_Web_Docs_logo.svg.png" alt="Logo de MDN">
+      <strong>MDN Web Docs</strong>
+    </a>
+    <span>La mejor referencia para HTML, CSS y JavaScript.</span>
+  </li>
+</ul>`,
+      css: `body {
+  font-family: Georgia, serif;
+  background: #efe9dc;
+  margin: 0;
+  padding: 32px;
+  color: #1c1a15;
+}
+h1 { color: #c04a2d; }
+.favoritos {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+.favoritos a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #1c1a15;
+  border: 1px solid #1c1a15;
+  padding: 12px;
+  background: white;
+}
+.favoritos img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+.favoritos span { display: block; color: #4a4538; font-size: 0.9rem; }`,
+      js: `/* Lección 6: HTML y CSS. JavaScript aparece en la lección 11. */`
+    }
+  },
+  {
+    id: 7,
+    module: "html",
+    num: "07",
+    title: ["Formulario de ", {em: "registro"}, ""],
+    lede: "Recoge datos del usuario con form, input, label, select y textarea.",
+    duration: "≈ 40 min",
+    level: "Inicial",
+    tags: [{t:"HTML", cls:""},{t:"CSS", cls:"teal"}],
+    description: "Los formularios son el puente entre el usuario y el servidor. Hoy vas a construir uno con varios tipos de campos.",
+    steps: [
+      { html: "Todo formulario se envuelve en <code>&lt;form action=\"/\" method=\"post\"&gt;</code>. <code>action</code> es la URL de destino y <code>method</code> cómo se envían los datos." },
+      { html: "Cada campo va dentro de un <code>&lt;label&gt;</code> que mejora la accesibilidad. Usa <code>for=\"id\"</code> para vincular el label al input." },
+      { html: "<code>&lt;input type=\"text|email|password|number|checkbox\"&gt;</code> define el tipo de dato. El navegador valida según el tipo." },
+      { html: "Para listas desplegables usa <code>&lt;select&gt;</code> con opciones <code>&lt;option&gt;</code>." },
+      { html: "El botón de enviar es <code>&lt;button type=\"submit\"&gt;</code>. <code>type=\"submit\"</code> hace que al pulsarlo se envíe el formulario." }
+    ],
+    challenge: "Añade validación HTML con los atributos <code>required</code>, <code>minlength=\"8\"</code> y <code>pattern=\"[A-Za-z]+\"</code> en los campos correspondientes.",
+    starter: {
+      html: `<h1>Crear cuenta</h1>
+<p>Completa los datos para registrarte.</p>
+
+<form class="registro" onsubmit="alert('Formulario enviado (demo)'); return false;">
+  <label for="nombre">Nombre completo</label>
+  <input id="nombre" name="nombre" type="text" placeholder="Ada Lovelace">
+
+  <label for="email">Correo electrónico</label>
+  <input id="email" name="email" type="email" placeholder="ada@ejemplo.com">
+
+  <label for="pass">Contraseña</label>
+  <input id="pass" name="pass" type="password" placeholder="Mínimo 8 caracteres">
+
+  <label for="edad">Edad</label>
+  <input id="edad" name="edad" type="number" min="13" max="120" value="18">
+
+  <label for="curso">Curso</label>
+  <select id="curso" name="curso">
+    <option value="">— Selecciona —</option>
+    <option>Primero Básico</option>
+    <option>Segundo Básico</option>
+    <option>Tercero Básico</option>
+  </select>
+
+  <label class="check">
+    <input type="checkbox" name="terminos">
+    Acepto los términos y condiciones
+  </label>
+
+  <button type="submit">Registrarme</button>
+</form>`,
+      css: `body {
+  font-family: Georgia, serif;
+  background: #efe9dc;
+  margin: 0;
+  padding: 32px;
+  color: #1c1a15;
+}
+h1 { color: #c04a2d; margin-top: 0; }
+.registro {
+  display: grid;
+  gap: 8px;
+  max-width: 420px;
+  background: white;
+  padding: 24px;
+  border: 1px solid #1c1a15;
+}
+.registro label {
+  font-size: 0.85rem;
+  color: #4a4538;
+  margin-top: 8px;
+}
+.registro input,
+.registro select {
+  padding: 8px 10px;
+  border: 1px solid #1c1a15;
+  background: #efe9dc;
+  font-family: inherit;
+}
+.registro .check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+.registro button {
+  margin-top: 12px;
+  padding: 12px;
+  background: #1c1a15;
+  color: #efe9dc;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+.registro button:hover { background: #c04a2d; }`,
+      js: `/* Lección 7: formulario con validación HTML nativa.
+   En la lección 17 validaremos con JavaScript. */`
+    }
+  },
+  {
+    id: 8,
+    module: "html",
+    num: "08",
+    title: ["HTML ", {em: "semántico"}, ""],
+    lede: "Da significado a cada parte de la página con header, nav, main, section, article y footer.",
+    duration: "≈ 35 min",
+    level: "Intermedio",
+    tags: [{t:"HTML", cls:""},{t:"CSS", cls:"teal"}],
+    description: "Más allá de <div>, HTML5 introdujo etiquetas que describen el rol de cada bloque. Mejoran SEO, accesibilidad y legibilidad del código.",
+    steps: [
+      { html: "<code>&lt;header&gt;</code> contiene el encabezado de la página o de una sección. <code>&lt;nav&gt;</code> agrupa los enlaces de navegación." },
+      { html: "<code>&lt;main&gt;</code> es el contenido único de la página. Sólo puede haber uno." },
+      { html: "<code>&lt;section&gt;</code> representa un bloque temático con su propio título. <code>&lt;article&gt;</code> es contenido independiente (una entrada de blog, una noticia, una tarjeta)." },
+      { html: "<code>&lt;aside&gt;</code> es contenido relacionado pero secundario (sidebar, anuncios). <code>&lt;footer&gt;</code> cierra la página con información final." },
+      { html: "Los lectores de pantalla y los motores de búsqueda agradecen este orden. Compruébalo viendo el código fuente de esta lección." }
+    ],
+    challenge: "Convierte cada bloque del starter en su equivalente semántico. Bonus: añade un <code>&lt;article&gt;</code> dentro del <code>&lt;main&gt;</code> con dos párrafos.",
+    starter: {
+      html: `<div class="sitio">
+  <div class="top">
+    <h1>Mi blog</h1>
+    <div class="links">
+      <a href="#">Inicio</a>
+      <a href="#">Artículos</a>
+      <a href="#">Sobre mí</a>
+    </div>
+  </div>
+
+  <div class="contenido">
+    <div class="articulo">
+      <h2>Cómo aprendí HTML</h2>
+      <p>Empecé copiando sitios que me gustaban y modificando el código hasta entender qué hacía cada etiqueta.</p>
+    </div>
+    <div class="articulo">
+      <h2>Mi editor favorito</h2>
+      <p>Uso un editor simple y el navegador. Sin frameworks, sin magia.</p>
+    </div>
+  </div>
+
+  <div class="lateral">
+    <h3>Suscríbete</h3>
+    <p>Recibe los nuevos artículos por correo.</p>
+  </div>
+
+  <div class="pie">
+    <small>© 2026 · Mi blog personal</small>
+  </div>
+</div>`,
+      css: `body {
+  font-family: Georgia, serif;
+  background: #efe9dc;
+  margin: 0;
+  color: #1c1a15;
+  padding: 24px;
+}
+.sitio {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.top, .pie, .lateral, .articulo {
+  background: white;
+  border: 1px solid #1c1a15;
+  padding: 16px;
+}
+.top { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; }
+.links a { color: #c04a2d; margin-left: 12px; text-decoration: none; }
+.links a:hover { text-decoration: underline; }
+.articulo h2 { color: #2d5f5d; margin-top: 0; }
+.lateral h3 { margin-top: 0; color: #c04a2d; }
+.pie { grid-column: 1 / -1; text-align: center; color: #4a4538; }
+h1, h2, h3 { font-family: inherit; }`,
+      js: `/* Lección 8: refactor semántico.
+   CSS funciona igual; lo que cambia es el significado del HTML. */`
+    }
+  },
+  {
+    id: 9,
+    module: "html",
+    num: "09",
+    title: ["Tablas de ", {em: "datos"}, ""],
+    lede: "Estructura información tabulada con table, thead, tbody, tr, th y td.",
+    duration: "≈ 30 min",
+    level: "Intermedio",
+    tags: [{t:"HTML", cls:""},{t:"CSS", cls:"teal"}],
+    description: "Las tablas son ideales para mostrar datos estructurados en filas y columnas. Hoy construirás una tabla de calificaciones.",
+    steps: [
+      { html: "<code>&lt;table&gt;</code> envuelve toda la tabla. <code>&lt;thead&gt;</code> contiene la fila de cabeceras, <code>&lt;tbody&gt;</code> las filas de datos." },
+      { html: "Cada fila es un <code>&lt;tr&gt;</code>. Las celdas de cabecera usan <code>&lt;th&gt;</code>, las de datos <code>&lt;td&gt;</code>." },
+      { html: "Para celdas que abarcan varias columnas usa <code>&lt;th colspan=\"2\"&gt;</code>." },
+      { html: "Añade un <code>&lt;caption&gt;</code> justo después de <code>&lt;table&gt;</code> para describir la tabla." },
+      { html: "Estila la tabla con <code>border-collapse</code> en CSS para unir los bordes en una sola línea." }
+    ],
+    challenge: "Añade una última fila con totales y un <code>colspan=\"2\"</code> en la celda final para mostrar el promedio general.",
+    starter: {
+      html: `<table class="calificaciones">
+  <caption>Calificaciones del primer trimestre</caption>
+  <thead>
+    <tr>
+      <th>Estudiante</th>
+      <th>Matemáticas</th>
+      <th>Historia</th>
+      <th>Programación</th>
+      <th>Promedio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ana García</td>
+      <td>95</td>
+      <td>88</td>
+      <td>92</td>
+      <td><strong>91.7</strong></td>
+    </tr>
+    <tr>
+      <td>Bruno López</td>
+      <td>78</td>
+      <td>85</td>
+      <td>80</td>
+      <td><strong>81.0</strong></td>
+    </tr>
+    <tr>
+      <td>Carla Méndez</td>
+      <td>100</td>
+      <td>95</td>
+      <td>98</td>
+      <td><strong>97.7</strong></td>
+    </tr>
+    <tr>
+      <td>Diego Pérez</td>
+      <td>82</td>
+      <td>76</td>
+      <td>85</td>
+      <td><strong>81.0</strong></td>
+    </tr>
+  </tbody>
+</table>`,
+      css: `body {
+  font-family: Georgia, serif;
+  background: #efe9dc;
+  margin: 0;
+  padding: 32px;
+  color: #1c1a15;
+}
+.calificaciones {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  background: white;
+}
+.calificaciones caption {
+  caption-side: top;
+  text-align: left;
+  padding: 8px 0;
+  font-family: Georgia, serif;
+  font-style: italic;
+  color: #4a4538;
+}
+.calificaciones th,
+.calificaciones td {
+  padding: 10px 12px;
+  text-align: left;
+  border: 1px solid #1c1a15;
+}
+.calificaciones thead th {
+  background: #1c1a15;
+  color: #efe9dc;
+  font-weight: 600;
+}
+.calificaciones tbody tr:nth-child(even) {
+  background: #f4e9b8;
+}
+.calificaciones strong { color: #c04a2d; }`,
+      js: `/* Lección 9: tablas. Sin JavaScript. */`
+    }
+  },
+  {
+    id: 10,
+    module: "css",
+    num: "10",
+    title: ["El modelo de ", {em: "caja"}, ""],
+    lede: "Entiende cómo el navegador calcula el tamaño de cada elemento: content, padding, border y margin.",
+    duration: "≈ 40 min",
+    level: "Intermedio",
+    tags: [{t:"HTML", cls:""},{t:"CSS", cls:"teal"}],
+    description: "Todo en CSS es una caja. Hoy vas a diseccionar una caja para entender qué hace cada propiedad y cómo se acumulan.",
+    steps: [
+      { html: "Una caja tiene cuatro zonas, del centro hacia afuera: <strong>content</strong>, <strong>padding</strong>, <strong>border</strong> y <strong>margin</strong>." },
+      { html: "Por defecto, <code>width</code> sólo cuenta el contenido. Añade <code>box-sizing: border-box</code> para que <code>width</code> incluya padding y border." },
+      { html: "Prueba a cambiar el padding y observa cómo crece la caja hacia adentro. El margin crece hacia afuera, pero NO aumenta el tamaño visible." },
+      { html: "<code>display: block</code> ocupa toda la línea; <code>display: inline</code> ocupa sólo lo necesario; <code>display: inline-block</code> es un híbrido." }
+    ],
+    challenge: "Crea tres tarjetas idénticas: una con <code>box-sizing: content-box</code>, otra con <code>border-box</code>, y observa la diferencia al agregar <code>padding: 20px</code>.",
+    starter: {
+      html: `<div class="lienzo">
+  <div class="caja">
+    <strong>Caja de prueba</strong>
+    <p>Esta caja tiene content + padding + border + margin.</p>
+    <code>width: 240px</code>
+  </div>
+</div>
+
+<div class="controles">
+  <p>Edita el CSS de la derecha para experimentar con las cuatro zonas.</p>
+</div>`,
+      css: `body {
+  font-family: Georgia, serif;
+  background: #efe9dc;
+  margin: 0;
+  padding: 32px;
+  color: #1c1a15;
+}
+.lienzo {
+  background: repeating-linear-gradient(
+    45deg,
+    #f4e9b8,
+    #f4e9b8 8px,
+    #efe9dc 8px,
+    #efe9dc 16px
+  );
+  padding: 24px;
+  border: 1px dashed #1c1a15;
+  margin-bottom: 24px;
+}
+.caja {
+  width: 240px;
+  padding: 20px;
+  border: 3px solid #1c1a15;
+  margin: 12px;
+  background: white;
+  /* Descomenta la siguiente línea para ver la diferencia */
+  /* box-sizing: border-box; */
+}
+.caja strong { display: block; color: #c04a2d; margin-bottom: 8px; }
+.caja p { margin: 0 0 8px 0; }
+.caja code { font-size: 0.85rem; background: #efe9dc; padding: 2px 4px; }
+.controles p { margin: 0; color: #4a4538; font-style: italic; }`,
+      js: `/* Lección 10: modelo de caja. Sin JavaScript. */`
+    }
+  },
+  {
+    id: 11,
+    module: "css",
+    num: "11",
+    title: ["Flexbox: ", {em: "alineación"}, " en 1D"],
+    lede: "Distribuye elementos en una dimensión con display: flex, justify-content, align-items y gap.",
+    duration: "≈ 45 min",
+    level: "Intermedio",
+    tags: [{t:"HTML", cls:""},{t:"CSS", cls:"teal"}],
+    description: "Flexbox es la herramienta moderna para alinear y distribuir elementos. Hoy construirás una barra de navegación flexible.",
+    steps: [
+      { html: "Aplica <code>display: flex</code> al contenedor y sus hijos directos se vuelven <em>flex items</em>." },
+      { html: "<code>justify-content</code> alinea en el eje principal. Valores: <code>flex-start</code>, <code>center</code>, <code>space-between</code>, <code>space-around</code>." },
+      { html: "<code>align-items</code> alinea en el eje perpendicular. Valores: <code>stretch</code>, <code>center</code>, <code>flex-end</code>." },
+      { html: "<code>flex-direction</code> cambia la dirección: <code>row</code> (por defecto) u <code>column</code>." },
+      { html: "<code>gap: 16px</code> añade espacio entre items sin necesidad de margins." }
+    ],
+    challenge: "Cambia la barra a <code>flex-direction: column</code> y observa cómo se invierten los ejes.",
+    starter: {
+      html: `<nav class="navbar">
+  <a href="#" class="logo">◆ Mi sitio</a>
+  <ul class="menu">
+    <li><a href="#">Inicio</a></li>
+    <li><a href="#">Proyectos</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#">Contacto</a></li>
+  </ul>
+  <button class="cta">Contrátame</button>
+</nav>
+
+<section class="hero">
+  <h1>Hola, soy Ada</h1>
+  <p>Esta página demuestra Flexbox.</p>
+</section>`,
+      css: `body {
+  font-family: Georgia, serif;
+  background: #efe9dc;
+  margin: 0;
+  color: #1c1a15;
+}
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: white;
+  border-bottom: 1px solid #1c1a15;
+}
+.logo {
+  font-weight: 700;
+  color: #c04a2d;
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+.menu {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.menu a {
+  color: #1c1a15;
+  text-decoration: none;
+}
+.menu a:hover { color: #c04a2d; }
+.cta {
+  background: #1c1a15;
+  color: #efe9dc;
+  border: none;
+  padding: 8px 16px;
+  font-family: inherit;
+  cursor: pointer;
+}
+.cta:hover { background: #c04a2d; }
+.hero {
+  text-align: center;
+  padding: 80px 32px;
+}
+.hero h1 {
+  font-size: 3rem;
+  color: #1c1a15;
+  margin: 0 0 8px;
+}
+.hero p { color: #4a4538; margin: 0; }`,
+      js: `/* Lección 11: Flexbox. Sin JavaScript. */`
+    }
+  },
+  {
+    id: 12,
+    module: "css",
+    num: "12",
+    title: ["Grid: ", {em: "layout"}, " en 2D"],
+    lede: "Crea rejillas bidimensionales con display: grid, grid-template-columns, grid-template-rows y gap.",
+    duration: "≈ 45 min",
+    level: "Intermedio",
+    tags: [{t:"HTML", cls:""},{t:"CSS", cls:"teal"}],
+    description: "Grid es perfecto cuando necesitas controlar filas Y columnas al mismo tiempo. Hoy montarás una galería 3×3.",
+    steps: [
+      { html: "<code>display: grid</code> activa el modo rejilla en el contenedor." },
+      { html: "<code>grid-template-columns: 1fr 1fr 1fr</code> define tres columnas de igual tamaño. <strong>fr</strong> significa \"fracción del espacio disponible\"." },
+      { html: "<code>grid-template-columns: repeat(3, 1fr)</code> es un atajo para escribir lo mismo." },
+      { html: "<code>grid-template-columns: 200px 1fr 200px</code> mezcla tamaños fijos y flexibles." },
+      { html: "<code>gap: 16px</code> separa filas y columnas a la vez. <code>row-gap</code> y <code>column-gap</code> los controlan por separado." }
+    ],
+    challenge: "Crea un layout de página completo con <code>grid-template-areas</code>: header arriba, nav a la izquierda, main en el centro, aside a la derecha y footer abajo.",
+    starter: {
+      html: `<h1>Galería de proyectos</h1>
+<p class="intro">Cada tarjeta representa un proyecto. Haz clic en cualquiera para verlo.</p>
+
+<div class="galeria">
+  <article class="tarjeta"><span>01</span><h3>Calculadora</h3><p>JavaScript puro.</p></article>
+  <article class="tarjeta"><span>02</span><h3>To-do list</h3><p>Persistencia local.</p></article>
+  <article class="tarjeta"><span>03</span><h3>Reloj</h3><p>CSS y setInterval.</p></article>
+  <article class="tarjeta"><span>04</span><h3>Quiz</h3><p>Preguntas aleatorias.</p></article>
+  <article class="tarjeta"><span>05</span><h3>Galería</h3><p>Esta misma página.</p></article>
+  <article class="tarjeta"><span>06</span><h3>Blog</h3><p>Markdown a HTML.</p></article>
+  <article class="tarjeta"><span>07</span><h3>Clima</h3><p>API pública.</p></article>
+  <article class="tarjeta"><span>08</span><h3>Dibujo</h3><p>Canvas y mouse.</p></article>
+  <article class="tarjeta"><span>09</span><h3>Juego</h3><p>Memoria visual.</p></article>
+</div>`,
+      css: `body {
+  font-family: Georgia, serif;
+  background: #efe9dc;
+  margin: 0;
+  padding: 32px;
+  color: #1c1a15;
+}
+h1 { color: #c04a2d; }
+.intro { color: #4a4538; margin-top: 0; }
+.galeria {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+.tarjeta {
+  background: white;
+  border: 1px solid #1c1a15;
+  padding: 24px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 200ms ease;
+}
+.tarjeta:hover { transform: translateY(-4px); }
+.tarjeta span {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  color: #7a7361;
+}
+.tarjeta h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #2d5f5d;
+}
+.tarjeta p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #4a4538;
+}`,
+      js: `/* Lección 12: Grid. Sin JavaScript. */`
+    }
+  },
+  {
+    id: 13,
+    module: "css",
+    num: "13",
+    title: ["Animaciones y ", {em: "transiciones"}, ""],
+    lede: "Da vida a los elementos con transition, transform, :hover y @keyframes.",
+    duration: "≈ 40 min",
+    level: "Intermedio",
+    tags: [{t:"HTML", cls:""},{t:"CSS", cls:"teal"}],
+    description: "Hoy harás que las cosas se muevan. Una transición suave al pasar el mouse y una animación continua que gira un objeto.",
+    steps: [
+      { html: "<code>transition: propiedad duración easing</code> anima el cambio de una propiedad cuando ocurre. Ejemplo: <code>transition: transform 300ms ease</code>." },
+      { html: "<code>transform: translate(x, y)</code> mueve el elemento. <code>scale(1.1)</code> lo agranda. <code>rotate(45deg)</code> lo gira." },
+      { html: "Combina con <code>:hover</code> para que la animación se dispare al pasar el mouse." },
+      { html: "Para animaciones más complejas usa <code>@keyframes</code> con <code>from</code> y <code>to</code> (o porcentajes), y aplícalas con <code>animation: nombre duración infinite</code>." }
+    ],
+    challenge: "Crea un botón que al pasar el mouse se \"levante\" con <code>translateY(-4px)</code> y una sombra más profunda (<code>box-shadow</code>).",
+    starter: {
+      html: `<h1>Pequeñas animaciones</h1>
+<p>Pasa el mouse sobre los elementos para verlos en movimiento.</p>
+
+<div class="fila">
+  <div class="caja transicion">Pasa el mouse</div>
+  <div class="caja girar"></div>
+  <div class="caja pulsar">Pulsa</div>
+</div>
+
+<div class="botones">
+  <button class="btn">Hover me</button>
+  <button class="btn primario">Click me</button>
+</div>`,
+      css: `body {
+  font-family: Georgia, serif;
+  background: #efe9dc;
+  margin: 0;
+  padding: 32px;
+  color: #1c1a15;
+}
+h1 { color: #c04a2d; }
+.fila {
+  display: flex;
+  gap: 24px;
+  margin: 32px 0;
+  flex-wrap: wrap;
+}
+.caja {
+  width: 120px;
+  height: 120px;
+  background: white;
+  border: 1px solid #1c1a15;
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+}
+.transicion {
+  transition: transform 250ms ease, background 250ms ease;
+}
+.transicion:hover {
+  transform: scale(1.1) rotate(-3deg);
+  background: #f4e9b8;
+}
+.girar {
+  border-radius: 50%;
+  border-style: dashed;
+  animation: spin 4s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.pulsar {
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); background: #c04a2d; color: white; }
+}
+.botones {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+}
+.btn {
+  padding: 12px 24px;
+  background: white;
+  border: 1px solid #1c1a15;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 0 #1c1a15;
+}
+.btn.primario {
+  background: #1c1a15;
+  color: white;
+}
+.btn.primario:hover {
+  background: #c04a2d;
+}`,
+      js: `/* Lección 13: animaciones CSS puras. Sin JavaScript. */`
+    }
+  },
+  {
+    id: 14,
+    module: "js",
+    num: "14",
+    title: ["Condicionales y ", {em: "lógica"}, ""],
+    lede: "Tu código toma decisiones: if, else if, else, comparaciones y operadores lógicos.",
+    duration: "≈ 40 min",
+    level: "Intermedio",
+    tags: [{t:"HTML", cls:""},{t:"CSS", cls:"teal"},{t:"JS", cls:"rust"}],
+    description: "Un programa necesita comparar y decidir. Hoy construirás el clásico juego \"Adivina el número\".",
+    steps: [
+      { html: "<code>if (condición) { ... }</code> ejecuta un bloque sólo si la condición es verdadera." },
+      { html: "Compara con <code>===</code> (estricto, recomendado) o <code>==</code> (con conversión). Para números, <code>===</code> es siempre la opción correcta." },
+      { html: "Operadores lógicos: <code>&amp;&amp;</code> (Y), <code>||</code> (O), <code>!</code> (NO)." },
+      { html: "<code>Math.random()</code> devuelve un número entre 0 y 1. Multiplica por N y redondea con <code>Math.floor()</code> para obtener un entero entre 0 y N-1." },
+      { html: "<code>else if</code> y <code>else</code> cubren los demás casos." }
+    ],
+    challenge: "Limita el juego a 5 intentos. Cuando se acaben, muestra el número secreto con un mensaje.",
+    starter: {
+      html: `<main class="tarjeta">
+  <h1>Adivina el número</h1>
+  <p>Estoy pensando un número entre 1 y 100.</p>
+  <p>Tienes <span id="intentos">5</span> intentos.</p>
+
+  <div class="fila">
+    <input id="numero" type="number" min="1" max="100" placeholder="Tu intento">
+    <button onclick="probar()">Probar</button>
+  </div>
+
+  <p id="pista" class="pista">— Escribe un número y pulsa Probar —</p>
+  <p id="historial" class="historial"></p>
+</main>`,
+      css: `body {
+  font-family: Georgia, serif;
+  background: #efe9dc;
+  margin: 0;
+  padding: 32px;
+  color: #1c1a15;
+  text-align: center;
+}
+.tarjeta {
+  background: white;
+  border: 1px solid #1c1a15;
+  padding: 32px;
+  max-width: 420px;
+  margin: 0 auto;
+}
+h1 { color: #c04a2d; margin-top: 0; }
+.fila {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+}
+input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #1c1a15;
+  font-family: inherit;
+  text-align: center;
+  font-size: 1.1rem;
+}
+button {
+  padding: 10px 20px;
+  background: #1c1a15;
+  color: #efe9dc;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+button:hover { background: #c04a2d; }
+.pista { color: #2d5f5d; font-weight: 600; min-height: 1.5em; }
+.historial { color: #7a7361; font-size: 0.9rem; min-height: 1.5em; }`,
+      js: `let secreto = Math.floor(Math.random() * 100) + 1;
+let intentos = 5;
+let historial = [];
+
+function probar() {
+  const input = document.getElementById('numero');
+  const valor = parseInt(input.value, 10);
+  const pista = document.getElementById('pista');
+  const restantes = document.getElementById('intentos');
+
+  if (isNaN(valor)) {
+    pista.textContent = 'Por favor escribe un número válido.';
+    return;
+  }
+
+  intentos = intentos - 1;
+  restantes.textContent = intentos;
+
+  if (valor === secreto) {
+    pista.textContent = '¡Correcto! Era ' + secreto + '.';
+    pista.style.color = '#c04a2d';
+  } else if (valor > secreto) {
+    pista.textContent = 'Más bajo...';
+  } else {
+    pista.textContent = 'Más alto...';
+  }
+
+  historial.push(valor);
+  document.getElementById('historial').textContent = 'Probados: ' + historial.join(', ');
+
+  if (intentos === 0 && valor !== secreto) {
+    pista.textContent = 'Sin intentos. El número era ' + secreto + '.';
+    pista.style.color = '#c04a2d';
+  }
+}`
+    }
+  },
+  {
+    id: 15,
+    module: "js",
+    num: "15",
+    title: ["Eventos del ", {em: "DOM"}, ""],
+    lede: "Escucha al usuario con addEventListener: click, input, change, keydown y el objeto event.",
+    duration: "≈ 40 min",
+    level: "Intermedio",
+    tags: [{t:"HTML", cls:""},{t:"CSS", cls:"teal"},{t:"JS", cls:"rust"}],
+    description: "En la lección 3 usaste onclick en HTML. Hoy aprenderás la forma profesional: addEventListener en JavaScript, con control total sobre los eventos.",
+    steps: [
+      { html: "<code>elemento.addEventListener('click', function(event) { ... })</code> registra un manejador para un evento." },
+      { html: "El argumento <code>event</code> contiene información útil: <code>event.target</code> es el elemento que disparó el evento, <code>event.currentTarget</code> el que tiene el listener." },
+      { html: "Eventos de teclado: <code>keydown</code>, <code>keyup</code>, <code>keypress</code>. <code>event.key</code> da la tecla pulsada." },
+      { html: "Eventos de formulario: <code>input</code> (cada cambio), <code>change</code> (al perder foco), <code>submit</code> (al enviar)." },
+      { html: "Puedes añadir varios listeners al mismo elemento para el mismo evento: todos se ejecutarán en orden." }
+    ],
+    challenge: "Convierte el formulario en un editor en vivo: cada vez que el usuario escribe en el input, un párrafo abajo refleja el texto en mayúsculas.",
+    starter: {
+      html: `<main class="tarjeta">
+  <h1>Editor en vivo</h1>
+  <p>Escribe abajo. El contador, la previsualización y el medidor se actualizan al instante.</p>
+
+  <label for="texto">Tu texto</label>
+  <textarea id="texto" placeholder="Escribe aquí..."></textarea>
+
+  <div class="metricas">
+    <div><strong id="caracteres">0</strong><span>caracteres</span></div>
+    <div><strong id="palabras">0</strong><span>palabras</span></div>
+    <div><strong id="lineas">0</strong><span>líneas</span></div>
+  </div>
+
+  <div class="barra">
+    <div id="progreso" class="barra-relleno"></div>
+  </div>
+  <p id="estado">0 / 200 caracteres</p>
+
+  <h3>Vista previa</h3>
+  <div id="preview" class="preview">— Vacío —</div>
+</main>`,
+      css: `body {
+  font-family: Georgia, serif;
+  background: #efe9dc;
+  margin: 0;
+  padding: 32px;
+  color: #1c1a15;
+}
+.tarjeta {
+  background: white;
+  border: 1px solid #1c1a15;
+  padding: 24px;
+  max-width: 540px;
+  margin: 0 auto;
+}
+h1 { color: #c04a2d; margin-top: 0; }
+textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  border: 1px solid #1c1a15;
+  background: #efe9dc;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
+  box-sizing: border-box;
+}
+.metricas {
+  display: flex;
+  gap: 16px;
+  margin: 16px 0;
+}
+.metricas div { flex: 1; text-align: center; }
+.metricas strong {
+  display: block;
+  font-size: 1.5rem;
+  color: #2d5f5d;
+}
+.metricas span { font-size: 0.8rem; color: #7a7361; }
+.barra {
+  width: 100%;
+  height: 6px;
+  background: #efe9dc;
+  border: 1px solid #1c1a15;
+  overflow: hidden;
+}
+.barra-relleno {
+  height: 100%;
+  width: 0%;
+  background: #c04a2d;
+  transition: width 200ms ease;
+}
+#estado { color: #4a4538; font-size: 0.85rem; }
+.preview {
+  background: #efe9dc;
+  padding: 12px;
+  border: 1px dashed #1c1a15;
+  min-height: 40px;
+}`,
+      js: `const texto = document.getElementById('texto');
+const caracteres = document.getElementById('caracteres');
+const palabras = document.getElementById('palabras');
+const lineas = document.getElementById('lineas');
+const progreso = document.getElementById('progreso');
+const estado = document.getElementById('estado');
+const preview = document.getElementById('preview');
+
+function actualizar(event) {
+  const valor = event.target.value;
+
+  caracteres.textContent = valor.length;
+  palabras.textContent = valor.trim() === '' ? 0 : valor.trim().split(/\\s+/).length;
+  lineas.textContent = valor === '' ? 0 : valor.split('\\n').length;
+
+  const pct = Math.min(100, (valor.length / 200) * 100);
+  progreso.style.width = pct + '%';
+  estado.textContent = valor.length + ' / 200 caracteres';
+
+  preview.textContent = valor === '' ? '— Vacío —' : valor;
+}
+
+texto.addEventListener('input', actualizar);`
+    }
+  },
+  {
+    id: 16,
+    module: "js",
+    num: "16",
+    title: ["Persistencia con ", {em: "localStorage"}, ""],
+    lede: "Guarda datos en el navegador con localStorage, JSON.stringify y JSON.parse.",
+    duration: "≈ 35 min",
+    level: "Avanzado",
+    tags: [{t:"HTML", cls:""},{t:"CSS", cls:"teal"},{t:"JS", cls:"rust"}],
+    description: "localStorage guarda pares clave-valor en el navegador del usuario. Sobrevive a recargas y cierres de pestaña. Hoy persistirás la lista de tareas de la lección 5.",
+    steps: [
+      { html: "<code>localStorage.setItem('clave', 'valor')</code> guarda un string. <code>localStorage.getItem('clave')</code> lo lee, devuelve <code>null</code> si no existe." },
+      { html: "Para guardar un array u objeto, primero conviértelo a string con <code>JSON.stringify</code>. Para recuperarlo, <code>JSON.parse</code>." },
+      { html: "<code>localStorage.removeItem('clave')</code> borra una clave. <code>localStorage.clear()</code> borra todo (úsalo con cuidado)." },
+      { html: "Llama a tu función <code>guardar()</code> cada vez que cambien los datos y a <code>cargar()</code> al iniciar la página." }
+    ],
+    challenge: "Añade un botón \"Exportar\" que descargue las tareas como un archivo .json usando <code>Blob</code> y <code>URL.createObjectURL</code>.",
+    starter: {
+      html: `<main class="tarjeta">
+  <h1>Tareas persistentes</h1>
+  <p class="sub">Esta lista sobrevive a recargas y cierres de pestaña.</p>
+
+  <div class="fila">
+    <input id="input" type="text" placeholder="Escribe una tarea…">
+    <button onclick="agregar()">Añadir</button>
+  </div>
+
+  <ul id="lista"></ul>
+
+  <div class="pie">
+    <span id="contador">0 tareas guardadas</span>
+    <button class="link" onclick="limpiarTodo()">Borrar todo</button>
+  </div>
+</main>`,
+      css: `body {
+  font-family: Georgia, serif;
+  background: #efe9dc;
+  margin: 0;
+  padding: 32px;
+  color: #1c1a15;
+}
+.tarjeta {
+  background: white;
+  border: 1px solid #1c1a15;
+  padding: 24px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+h1 { margin-top: 0; color: #c04a2d; }
+.sub { color: #4a4538; margin-top: -8px; font-size: 0.9rem; }
+.fila { display: flex; gap: 8px; margin: 16px 0; }
+input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #1c1a15;
+  font-family: inherit;
+  background: #efe9dc;
+}
+button {
+  background: #1c1a15;
+  color: #efe9dc;
+  border: none;
+  padding: 10px 16px;
+  font-family: inherit;
+  cursor: pointer;
+}
+button:hover { background: #c04a2d; }
+ul { list-style: none; padding: 0; margin: 0; }
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px dashed rgba(28,26,21,0.2);
+}
+li .texto { flex: 1; cursor: pointer; }
+li.hecho .texto { text-decoration: line-through; color: #7a7361; }
+li button {
+  background: transparent;
+  color: #c04a2d;
+  border: 1px solid #c04a2d;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+}
+li button:hover { background: #c04a2d; color: white; }
+.pie {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  font-size: 0.85rem;
+}
+.link {
+  background: transparent;
+  color: #7a7361;
+  border: none;
+  text-decoration: underline;
+  padding: 0;
+  font-size: 0.85rem;
+}
+.link:hover { color: #c04a2d; background: transparent; }`,
+      js: `let tareas = [];
+
+function guardar() {
+  localStorage.setItem('mis-tareas', JSON.stringify(tareas));
+}
+
+function cargar() {
+  const data = localStorage.getItem('mis-tareas');
+  tareas = data ? JSON.parse(data) : ['Aprender localStorage'];
+  render();
+}
+
+function render() {
+  const lista = document.getElementById('lista');
+  lista.innerHTML = '';
+  tareas.forEach((texto, indice) => {
+    const li = document.createElement('li');
+    li.innerHTML = \`
+      <span class="texto" onclick="completar(\${indice})">\${texto}</span>
+      <button onclick="borrar(\${indice})">Borrar</button>
+    \`;
+    lista.appendChild(li);
+  });
+  document.getElementById('contador').textContent = tareas.length + ' tareas guardadas';
+}
+
+function agregar() {
+  const input = document.getElementById('input');
+  const texto = input.value.trim();
+  if (texto === '') return;
+  tareas.push(texto);
+  input.value = '';
+  guardar();
+  render();
+}
+
+function borrar(indice) {
+  tareas.splice(indice, 1);
+  guardar();
+  render();
+}
+
+function completar(indice) {
+  const items = document.querySelectorAll('#lista li');
+  items[indice].classList.toggle('hecho');
+}
+
+function limpiarTodo() {
+  if (confirm('¿Borrar todas las tareas?')) {
+    tareas = [];
+    guardar();
+    render();
+  }
+}
+
+cargar();
+render();`
+    }
+  },
+  {
+    id: 17,
+    module: "js",
+    num: "17",
+    title: ["Validación de ", {em: "formularios"}, ""],
+    lede: "Combina HTML + CSS + JavaScript para validar un formulario con feedback visual en tiempo real.",
+    duration: "≈ 50 min",
+    level: "Avanzado",
+    tags: [{t:"HTML", cls:""},{t:"CSS", cls:"teal"},{t:"JS", cls:"rust"}],
+    description: "Cierre del curso: integramos todo lo aprendido. Un formulario de login que valida cada campo al perder foco, muestra mensajes de error y desactiva el botón hasta que todo esté correcto.",
+    steps: [
+      { html: "Adjunta un listener <code>blur</code> a cada campo para validarlo cuando el usuario sale de él." },
+      { html: "Crea una función <code>validar()</code> que devuelva <code>true</code> o <code>false</code> según las reglas. Muestra mensajes en un <code>&lt;small class=\"error\"&gt;</code> debajo de cada campo." },
+      { html: "Usa <code>classList.add('valido')</code> y <code>classList.remove('invalido')</code> para dar feedback visual con CSS." },
+      { html: "El botón de enviar debe estar <code>disabled</code> mientras algún campo sea inválido. Usa un contador <code>errores</code> que se actualice en cada cambio." },
+      { html: "Al enviar exitosamente, llama a <code>event.preventDefault()</code> para que la página no se recargue." }
+    ],
+    challenge: "Añade un indicador de fuerza de contraseña que cambie de rojo a verde según la longitud y la presencia de números y símbolos.",
+    starter: {
+      html: `<main class="tarjeta">
+  <h1>Iniciar sesión</h1>
+  <p>Completa los datos para entrar al sistema.</p>
+
+  <form id="form" novalidate>
+    <label for="user">Usuario</label>
+    <input id="user" name="user" type="text" placeholder="mínimo 4 letras">
+    <small class="error" id="err-user"></small>
+
+    <label for="email">Correo</label>
+    <input id="email" name="email" type="email" placeholder="tu@correo.com">
+    <small class="error" id="err-email"></small>
+
+    <label for="pass">Contraseña</label>
+    <input id="pass" name="pass" type="password" placeholder="mínimo 8 caracteres">
+    <small class="error" id="err-pass"></small>
+
+    <label class="check">
+      <input id="recuerdame" type="checkbox">
+      Recuérdame en este dispositivo
+    </label>
+
+    <button id="submit" type="submit" disabled>Entrar</button>
+    <p id="ok" class="ok" hidden>¡Bienvenido! Acceso concedido (demo).</p>
+  </form>
+</main>`,
+      css: `body {
+  font-family: Georgia, serif;
+  background: #efe9dc;
+  margin: 0;
+  padding: 32px;
+  color: #1c1a15;
+}
+.tarjeta {
+  background: white;
+  border: 1px solid #1c1a15;
+  padding: 32px;
+  max-width: 440px;
+  margin: 0 auto;
+}
+h1 { color: #c04a2d; margin-top: 0; }
+form { display: grid; gap: 4px; }
+label {
+  font-size: 0.85rem;
+  color: #4a4538;
+  margin-top: 12px;
+}
+input {
+  padding: 10px;
+  border: 1px solid #1c1a15;
+  font-family: inherit;
+  background: #efe9dc;
+}
+input.valido { border-color: #2d5f5d; background: #f0f8f7; }
+input.invalido { border-color: #c04a2d; background: #fdeae4; }
+.error { color: #c04a2d; font-size: 0.8rem; min-height: 1em; margin: 2px 0 0 0; }
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: 0.9rem;
+}
+button {
+  margin-top: 16px;
+  padding: 12px;
+  background: #1c1a15;
+  color: #efe9dc;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  font-size: 1rem;
+}
+button:hover:not(:disabled) { background: #c04a2d; }
+button:disabled {
+  background: #7a7361;
+  cursor: not-allowed;
+}
+.ok {
+  color: #2d5f5d;
+  background: #f0f8f7;
+  border: 1px solid #2d5f5d;
+  padding: 12px;
+  margin-top: 12px;
+  font-weight: 600;
+}`,
+      js: `let errores = 0;
+
+function setEstado(input, errEl, mensaje, valido) {
+  if (valido) {
+    input.classList.add('valido');
+    input.classList.remove('invalido');
+    errEl.textContent = '';
+  } else {
+    input.classList.remove('valido');
+    input.classList.add('invalido');
+    errEl.textContent = mensaje;
+  }
+}
+
+function validarUsuario() {
+  const input = document.getElementById('user');
+  const err = document.getElementById('err-user');
+  const v = input.value.trim();
+  let ok = true, msg = '';
+  if (v === '') { ok = false; msg = 'El usuario es obligatorio.'; }
+  else if (v.length < 4) { ok = false; msg = 'Mínimo 4 caracteres.'; }
+  setEstado(input, err, msg, ok);
+  return ok;
+}
+
+function validarEmail() {
+  const input = document.getElementById('email');
+  const err = document.getElementById('err-email');
+  const v = input.value.trim();
+  let ok = true, msg = '';
+  if (v === '') { ok = false; msg = 'El correo es obligatorio.'; }
+  else if (!/^[^@]+@[^@]+\\.[^@]+$/.test(v)) { ok = false; msg = 'Formato inválido.'; }
+  setEstado(input, err, msg, ok);
+  return ok;
+}
+
+function validarPass() {
+  const input = document.getElementById('pass');
+  const err = document.getElementById('err-pass');
+  const v = input.value;
+  let ok = true, msg = '';
+  if (v === '') { ok = false; msg = 'La contraseña es obligatoria.'; }
+  else if (v.length < 8) { ok = false; msg = 'Mínimo 8 caracteres.'; }
+  setEstado(input, err, msg, ok);
+  return ok;
+}
+
+function actualizarBoton() {
+  document.getElementById('submit').disabled = errores > 0;
+}
+
+function contar(valido) {
+  errores += valido ? -1 : 1;
+  actualizarBoton();
+}
+
+document.getElementById('user').addEventListener('blur', () => contar(validarUsuario()));
+document.getElementById('email').addEventListener('blur', () => contar(validarEmail()));
+document.getElementById('pass').addEventListener('blur', () => contar(validarPass()));
+
+document.getElementById('form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (errores === 0) {
+    document.getElementById('ok').hidden = false;
+  }
+});`
+    }
   }
 ];
 
@@ -1254,18 +2691,73 @@ function tagsHtml(tags) {
   return tags.map(t => `<span class="tag ${t.cls ? 'tag--'+t.cls : ''}">${t.t}</span>`).join('');
 }
 
+const MODULES = {
+  html: { num: '01', title: 'HTML', emTitle: 'estructura', desc: 'Etiquetas y significado del documento' },
+  css:  { num: '02', title: 'CSS',  emTitle: 'apariencia', desc: 'Color, tipografía y layout' },
+  js:   { num: '03', title: 'JavaScript', emTitle: 'comportamiento', desc: 'Eventos, estado y persistencia' }
+};
+
+let activeFilter = 'all';
+
 function renderLanding() {
-  const grid = document.getElementById('lessonsGrid');
-  grid.innerHTML = lessons.map(l => `
-    <button class="lesson-card" data-id="${l.id}" type="button">
-      <span class="lesson-card__num">Lección ${l.num}</span>
-      ${schematics[l.id]}
-      <h3 class="lesson-card__title">${titleHtml(l.title)}</h3>
-      <p class="lesson-card__lede">${l.lede}</p>
-      <div class="lesson-card__tags">${tagsHtml(l.tags)}</div>
-      <span class="lesson-card__cta">Abrir lección <span class="lesson-card__arrow">→</span></span>
+  // Píldoras de filtro
+  const counts = {
+    all:  lessons.length,
+    html: lessons.filter(l => l.module === 'html').length,
+    css:  lessons.filter(l => l.module === 'css').length,
+    js:   lessons.filter(l => l.module === 'js').length
+  };
+  const filterEl = document.getElementById('filters');
+  filterEl.innerHTML = [
+    { key: 'all',  label: 'Todos' },
+    { key: 'html', label: 'HTML' },
+    { key: 'css',  label: 'CSS' },
+    { key: 'js',   label: 'JavaScript' }
+  ].map(f => `
+    <button class="filter-pill" data-filter="${f.key}" type="button"
+            aria-pressed="${f.key === activeFilter}">
+      ${f.label} <span class="filter-pill__count">${counts[f.key]}</span>
     </button>
   `).join('');
+
+  filterEl.querySelectorAll('.filter-pill').forEach(p => {
+    p.addEventListener('click', () => {
+      activeFilter = p.dataset.filter;
+      renderLanding();
+    });
+  });
+
+  // Grid con cabeceras de módulo
+  const grid = document.getElementById('lessonsGrid');
+  const visibleModules = activeFilter === 'all'
+    ? Object.keys(MODULES)
+    : [activeFilter];
+
+  const html = visibleModules.map(mod => {
+    const m = MODULES[mod];
+    const items = lessons.filter(l => l.module === mod);
+    return `
+      <div class="module-head" data-module="${mod}">
+        <div>
+          <span class="module-head__num">Módulo ${m.num}</span>
+          <h3 class="module-head__title">${m.title} <em>· ${m.emTitle}</em></h3>
+        </div>
+        <span class="module-head__desc">${m.desc} · ${items.length} lecciones</span>
+      </div>
+      ${items.map(l => `
+        <button class="lesson-card" data-id="${l.id}" type="button">
+          <span class="lesson-card__num">Lección ${l.num}</span>
+          ${schematics[l.id]}
+          <h3 class="lesson-card__title">${titleHtml(l.title)}</h3>
+          <p class="lesson-card__lede">${l.lede}</p>
+          <div class="lesson-card__tags">${tagsHtml(l.tags)}</div>
+          <span class="lesson-card__cta">Abrir lección <span class="lesson-card__arrow">→</span></span>
+        </button>
+      `).join('')}
+    `;
+  }).join('');
+
+  grid.innerHTML = html;
 
   grid.querySelectorAll('.lesson-card').forEach(card => {
     card.addEventListener('click', () => openLesson(Number(card.dataset.id)));
