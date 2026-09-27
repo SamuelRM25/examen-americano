@@ -1,37 +1,1486 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Exámenes · Colegio Americano</title>
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/theme.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Laboratorio Web · Aprende HTML, CSS y JS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<style>
+/* ─────────────────────────────────────────────────────────
+   DESIGN TOKENS
+   Estética: manual técnico de ingeniería sobre papel envejecido
+   ───────────────────────────────────────────────────────── */
+:root {
+  /* Paleta */
+  --paper:        #EFE9DC;
+  --paper-deep:   #E4DCC6;
+  --paper-edge:   #D6CCB1;
+  --ink:          #1C1A15;
+  --ink-soft:     #4A4538;
+  --ink-faint:    #7A7361;
+  --grid:         rgba(28, 26, 21, 0.055);
+  --grid-bold:    rgba(28, 26, 21, 0.11);
+  --rust:         #C04A2D;
+  --rust-deep:    #9A3A22;
+  --teal:         #2D5F5D;
+  --teal-deep:    #1F4442;
+  --mustard:      #C99700;
+  --highlight:    #F4E9B8;
+
+  /* Tipografía */
+  --font-display: "Fraunces", "Iowan Old Style", "Georgia", serif;
+  --font-body:    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono:    "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+
+  /* Espaciado */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+
+  /* Miscelánea */
+  --rule: 1px solid var(--ink);
+  --rule-faint: 1px solid rgba(28, 26, 21, 0.18);
+  --shadow-paper: 0 1px 0 rgba(28,26,21,0.08), 0 12px 32px -16px rgba(28,26,21,0.25);
+  --radius-sm: 2px;
+}
+
+/* ─────────────────────────────────────────────────────────
+   RESET + BASE
+   ───────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: -1px -1px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; border: none; background: none; }
+a { color: var(--rust-deep); text-underline-offset: 3px; }
+::selection { background: var(--mustard); color: var(--ink); }
+
+/* ─────────────────────────────────────────────────────────
+   HEADER / SELLO DE DOCUMENTO
+   ───────────────────────────────────────────────────────── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  padding: var(--s-3) var(--s-6);
+  background: var(--paper);
+  border-bottom: 1px solid var(--ink);
+  backdrop-filter: blur(4px);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+.brand-mark {
+  width: 36px; height: 36px;
+  display: grid; place-items: center;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.15rem;
+  border-radius: 50%;
+  letter-spacing: -0.02em;
+}
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+.brand-sub {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.doc-stamp {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  padding: var(--s-2) var(--s-4);
+  border: 1.5px solid var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transform: rotate(-1.2deg);
+  background: var(--paper);
+}
+.doc-stamp__row { display: flex; gap: var(--s-3); align-items: center; }
+.doc-stamp__row + .doc-stamp__row { margin-top: 2px; }
+.doc-stamp__label { color: var(--ink-faint); }
+.doc-stamp__val { font-weight: 600; }
+.doc-stamp__chip {
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--rust);
+  box-shadow: 0 0 0 2px var(--paper), 0 0 0 3px var(--rust);
+}
+
+/* ─────────────────────────────────────────────────────────
+   LANDING
+   ───────────────────────────────────────────────────────── */
+.landing {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--s-8) var(--s-6) var(--s-9);
+}
+.hero {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: var(--s-7);
+  align-items: end;
+  padding-bottom: var(--s-7);
+  border-bottom: 1px solid var(--ink);
+  position: relative;
+}
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: var(--s-4);
+}
+.hero__eyebrow::before {
+  content: "";
+  width: 28px; height: 1px;
+  background: var(--ink-soft);
+}
+.hero__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.6rem, 5.5vw, 4.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  font-variation-settings: "opsz" 144;
+  margin: 0;
+}
+.hero__title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--rust-deep);
+}
+.hero__meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-3);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  border-left: 1px solid var(--ink);
+  padding-left: var(--s-5);
+}
+.hero__meta dt {
+  text-transform: uppercase;
+  font-size: 0.66rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.14em;
+}
+.hero__meta dd {
+  margin: 0 0 var(--s-3) 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: var(--s-7);
+  margin-bottom: var(--s-5);
+  padding-bottom: var(--s-3);
+  border-bottom: 1px solid var(--ink);
+}
+.section-head h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.6rem;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+.section-head__num {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+/* Grid de lecciones — 3 columnas, layout 3+2 */
+.lessons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--ink);
+  border-left: 1px solid var(--ink);
+}
+.lesson-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  padding: var(--s-5) var(--s-5) var(--s-5);
+  text-align: left;
+  width: 100%;
+  transition: background 200ms ease, transform 200ms ease;
+  border-right: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+.lesson-card:hover {
+  background: var(--cream);
+}
+.lesson-card:hover .lesson-card__arrow { transform: translateX(4px); }
+.lesson-card__num {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+  margin-bottom: var(--s-5);
+}
+.lesson-card__schem {
+  width: 64px;
+  height: 64px;
+  margin-bottom: var(--s-5);
+  color: var(--ink);
+}
+.lesson-card__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.6rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--s-2) 0;
+  font-variation-settings: "opsz" 60;
+}
+.lesson-card__title em {
+  font-style: italic;
+  color: var(--rust-deep);
+  font-weight: 400;
+}
+.lesson-card__lede {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  margin: 0 0 var(--s-4) 0;
+  line-height: 1.45;
+}
+.lesson-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  margin-top: auto;
+  margin-bottom: var(--s-4);
+}
+.tag {
+  display: inline-block;
+  padding: 3px 8px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--paper-deep);
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--radius-sm);
+  color: var(--ink-soft);
+}
+.tag--rust { background: #F5DCD2; color: var(--rust-deep); border-color: #E5B8A8; }
+.tag--teal { background: #D4E3E1; color: var(--teal-deep); border-color: #A8C2BF; }
+.lesson-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding-top: var(--s-3);
+  border-top: 1px solid var(--rule-faint);
+  margin-top: var(--s-3);
+}
+.lesson-card__arrow {
+  display: inline-block;
+  transition: transform 200ms ease;
+}
+
+/* Footer del landing */
+.landing-footer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-5);
+  margin-top: var(--s-8);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+}
+.landing-footer strong {
+  display: block;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--s-2);
+}
+.landing-footer p { margin: 0; }
+
+/* ─────────────────────────────────────────────────────────
+   VISTA DE LECCIÓN
+   ───────────────────────────────────────────────────────── */
+.lesson-view {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: var(--s-6);
+}
+.breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--ink);
+  background: var(--paper);
+}
+.breadcrumb:hover { background: var(--cream); }
+
+.lesson-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--s-6);
+  align-items: end;
+  margin: var(--s-6) 0 var(--s-7);
+  padding-bottom: var(--s-5);
+  border-bottom: 1px solid var(--ink);
+}
+.lesson-header__num {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: var(--s-3);
+}
+.lesson-header__title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--s-3) 0;
+  font-variation-settings: "opsz" 144;
+}
+.lesson-header__title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--rust-deep);
+}
+.lesson-header__desc {
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  max-width: 64ch;
+  margin: 0;
+}
+.lesson-header__specs {
+  display: grid;
+  grid-auto-flow: column;
+  gap: var(--s-5);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  border-left: 1px solid var(--ink);
+  padding-left: var(--s-5);
+}
+.lesson-header__specs dt {
+  text-transform: uppercase;
+  font-size: 0.64rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.14em;
+}
+.lesson-header__specs dd {
+  margin: 0 0 var(--s-2) 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: 0;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+}
+.panel {
+  background: var(--paper);
+  padding: var(--s-5);
+  margin: -1px -1px 0 0;
+}
+.panel + .panel { margin-left: 0; }
+
+.panel__title {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 var(--s-4) 0;
+  padding-bottom: var(--s-3);
+  border-bottom: 1px solid var(--rule-faint);
+}
+.panel__title::before {
+  content: "";
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--rust);
+}
+.panel__title--teal::before { background: var(--teal); }
+.panel__title--mono::before { background: var(--mustard); }
+
+/* Steps / instrucciones */
+.steps { counter-reset: step; }
+.step {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s-3);
+  padding: var(--s-3) 0;
+  border-bottom: 1px dashed var(--rule-faint);
+}
+.step:last-child { border-bottom: none; }
+.step::before {
+  content: counter(step, decimal-leading-zero);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+  padding-top: 2px;
+}
+.step__body p { margin: 0 0 var(--s-2) 0; }
+.step__body p:last-child { margin-bottom: 0; }
+.step__body code, .step__body kbd {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--paper-deep);
+  border: 1px solid var(--paper-edge);
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+  color: var(--rust-deep);
+}
+.step__body strong { color: var(--ink); font-weight: 600; }
+
+.callout {
+  margin-top: var(--s-5);
+  padding: var(--s-3) var(--s-4);
+  background: var(--highlight);
+  border-left: 3px solid var(--mustard);
+  font-size: 0.88rem;
+}
+.callout__label {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rust-deep);
+  display: block;
+  margin-bottom: var(--s-1);
+}
+
+/* Editor + preview */
+.workbench {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--s-4);
+  min-height: 560px;
+}
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--ink);
+}
+.tab {
+  padding: var(--s-2) var(--s-4);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  border: 1px solid transparent;
+  border-bottom: none;
+  margin-bottom: -1px;
+  background: transparent;
+}
+.tab[aria-selected="true"] {
+  background: var(--paper);
+  border-color: var(--ink);
+  color: var(--ink);
+  font-weight: 600;
+}
+.tab[hidden] { display: none; }
+
+.editor {
+  display: grid;
+  grid-template-rows: 1fr;
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  position: relative;
+}
+.editor textarea {
+  width: 100%;
+  min-height: 320px;
+  background: transparent;
+  color: #F0E8D5;
+  border: none;
+  padding: var(--s-4);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+  tab-size: 2;
+}
+.editor textarea:focus { background: #25221A; }
+
+.editor-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--s-2) var(--s-4);
+  background: #0E0D0A;
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.editor-bar__dots { display: inline-flex; gap: 6px; }
+.editor-bar__dots span {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: #4A4538;
+}
+
+.preview-frame {
+  width: 100%;
+  height: 360px;
+  border: 1px solid var(--ink);
+  background: white;
+}
+.console {
+  margin-top: var(--s-3);
+  padding: var(--s-3);
+  background: var(--ink);
+  color: #E0D7BF;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  min-height: 60px;
+  max-height: 140px;
+  overflow: auto;
+  white-space: pre-wrap;
+}
+.console__line { display: block; }
+.console__line--err { color: #FFB199; }
+.console__label {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: var(--s-3) 0 var(--s-2);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-5);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  transition: background 150ms ease;
+}
+.btn:hover { background: var(--rust-deep); }
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+}
+.btn--ghost:hover { background: var(--ink); color: var(--paper); }
+
+.workbench__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+}
+.workbench__hint {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+}
+
+/* ─────────────────────────────────────────────────────────
+   UTILIDADES + RESPONSIVE
+   ───────────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+[hidden] { display: none !important; }
+
+@media (max-width: 960px) {
+  .hero { grid-template-columns: 1fr; gap: var(--s-5); }
+  .hero__meta { border-left: none; border-top: 1px solid var(--ink); padding-left: 0; padding-top: var(--s-4); }
+  .workspace { grid-template-columns: 1fr; }
+  .panel + .panel { margin-top: -1px; }
+  .lesson-header { grid-template-columns: 1fr; }
+  .lesson-header__specs { border-left: none; border-top: 1px solid var(--ink); padding-left: 0; padding-top: var(--s-3); grid-auto-flow: row; }
+  .landing-footer { grid-template-columns: 1fr; gap: var(--s-4); }
+  .doc-stamp { display: none; }
+  .lessons { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .landing { padding: var(--s-5) var(--s-4) var(--s-7); }
+  .lesson-view { padding: var(--s-4); }
+  .site-header { padding: var(--s-3) var(--s-4); }
+  .lessons { grid-template-columns: 1fr; }
+}
+</style>
 </head>
 <body>
-<div class="container">
-  <header class="header">
-    <h1>📚 Exámenes Colegio Americano</h1>
-    <p>Plataforma de evaluación · Prof. Samuel Ramírez</p>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header class="site-header">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">L</span>
+    <span class="brand-name">
+      Laboratorio Web
+      <span class="brand-sub">Manual de campo · Módulo 01</span>
+    </span>
+  </div>
+  <div class="doc-stamp" aria-hidden="true">
+    <div class="doc-stamp__row"><span class="doc-stamp__chip"></span><span class="doc-stamp__label">Doc.</span> <span class="doc-stamp__val">LW-001</span></div>
+    <div class="doc-stamp__row"><span class="doc-stamp__label">Rev.</span> <span class="doc-stamp__val">2026.A</span></div>
+    <div class="doc-stamp__row"><span class="doc-stamp__label">Hoja</span> <span class="doc-stamp__val">1 / 1</span></div>
+  </div>
+</header>
+
+<!-- ═══════════════ LANDING ═══════════════ -->
+<main id="landing" class="landing">
+
+  <section class="hero">
+    <div>
+      <p class="hero__eyebrow">Curso de introducción · 5 lecciones</p>
+      <h1 class="hero__title">
+        Construye la web,<br />
+        una <em>etiqueta</em><br />
+        a la vez.
+      </h1>
+    </div>
+    <dl class="hero__meta">
+      <div>
+        <dt>Dirigido a</dt>
+        <dd>Estudiantes sin experiencia</dd>
+      </div>
+      <div>
+        <dt>Stack</dt>
+        <dd>HTML · CSS · JavaScript</dd>
+      </div>
+      <div>
+        <dt>Duración</dt>
+        <dd>5 sesiones · 45 min c/u</dd>
+      </div>
+    </dl>
+  </section>
+
+  <div class="section-head">
+    <h2>Catálogo de ejercicios</h2>
+    <span class="section-head__num">Tabla 01 / Lecciones</span>
+  </div>
+
+  <div class="lessons" id="lessonsGrid"><!-- inyectado por JS --></div>
+
+  <footer class="landing-footer">
+    <div>
+      <strong>Cómo se usa</strong>
+      <p>Elige una lección, lee los pasos a la izquierda y modifica el código a la derecha. Pulsa <em>Ejecutar</em> para ver el resultado en la vista previa.</p>
+    </div>
+    <div>
+      <strong>Progresión</strong>
+      <p>Las lecciones siguen un orden recomendado. Cada una introduce un concepto nuevo sobre lo aprendido en la anterior.</p>
+    </div>
+    <div>
+      <strong>Sin instalación</strong>
+      <p>Solo necesitas un navegador. Todo el código vive en esta página. Puedes guardarla con Ctrl/⌘ + S.</p>
+    </div>
+  </footer>
+</main>
+
+<!-- ═══════════════ VISTA DE LECCIÓN ═══════════════ -->
+<main id="lessonView" class="lesson-view" hidden>
+
+  <button class="breadcrumb" id="backBtn" type="button">
+    ← Volver al catálogo
+  </button>
+
+  <header class="lesson-header">
+    <div>
+      <p class="lesson-header__num" id="lhNum"></p>
+      <h1 class="lesson-header__title" id="lhTitle"></h1>
+      <p class="lesson-header__desc" id="lhDesc"></p>
+    </div>
+    <dl class="lesson-header__specs" id="lhSpecs"></dl>
   </header>
 
-  <div class="card">
-    <h2>Selecciona tu curso</h2>
-    <p style="color: var(--muted); margin-bottom: 20px;">Cada examen cubre las dos primeras clases del curso. Tienes <strong>30 minutos</strong> para completarlo. Necesitarás tu código de acceso proporcionado por el profesor.</p>
-    <div class="courses-grid" id="courses-grid"></div>
+  <div class="workspace">
+    <!-- Panel instrucciones -->
+    <section class="panel" aria-label="Instrucciones">
+      <h2 class="panel__title">Guía de la lección</h2>
+      <ol class="steps" id="stepsList"></ol>
+      <div class="callout" id="challenge" hidden>
+        <span class="callout__label">Reto extra</span>
+        <div id="challengeBody"></div>
+      </div>
+    </section>
+
+    <!-- Panel editor + preview -->
+    <section class="panel" aria-label="Editor y vista previa">
+      <h2 class="panel__title panel__title--mono">Banco de trabajo</h2>
+
+      <div class="workbench">
+        <div class="tabs" id="tabs" role="tablist">
+          <button class="tab" data-tab="html" role="tab" aria-selected="true">HTML</button>
+          <button class="tab" data-tab="css"  role="tab" aria-selected="false">CSS</button>
+          <button class="tab" data-tab="js"   role="tab" aria-selected="false">JS</button>
+        </div>
+
+        <div class="editor" id="editorWrap">
+          <div class="editor-bar">
+            <span class="editor-bar__dots" aria-hidden="true"><span></span><span></span><span></span></span>
+            <span id="fileName">index.html</span>
+          </div>
+          <textarea id="codeArea" spellcheck="false" aria-label="Editor de código"></textarea>
+        </div>
+
+        <div>
+          <div class="workbench__bar">
+            <button class="btn" id="runBtn" type="button">▶ Ejecutar</button>
+            <span class="workbench__hint" id="hint">Ctrl/⌘ + Enter para ejecutar</span>
+          </div>
+          <iframe id="preview" class="preview-frame" title="Vista previa" sandbox="allow-scripts"></iframe>
+          <p class="console__label">Consola</p>
+          <div class="console" id="console"><span class="console__line">— Vacía —</span></div>
+        </div>
+      </div>
+    </section>
   </div>
+</main>
 
-  <div class="card" style="text-align: center; background: rgba(255,255,255,0.7);">
-    <p style="color: var(--muted); font-size: 14px; margin-bottom: 12px;">¿Solo quieres probar el sistema?</p>
-    <button class="btn btn-secondary" id="btn-test" style="font-size: 14px;">🧪 Examen de prueba (4 preguntas, 5 min)</button>
-    <p style="margin-top: 16px; font-size: 13px; color: var(--muted);">
-      <a href="#" id="link-profesor" style="color: var(--secondary); font-weight: 600;">📊 Panel del profesor</a>
-    </p>
+<!-- ═══════════════ DATOS + LÓGICA ═══════════════ -->
+<script>
+/* ─────────────────────────────────────────────────────────
+   ESQUEMAS SVG (uno por lección) — firma visual
+   ───────────────────────────────────────────────────────── */
+const schematics = {
+  1: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="10" y="8" width="44" height="48" rx="2"/>
+    <line x1="18" y1="20" x2="46" y2="20"/>
+    <line x1="18" y1="28" x2="40" y2="28"/>
+    <line x1="18" y1="36" x2="46" y2="36"/>
+    <line x1="18" y1="44" x2="34" y2="44"/>
+    <circle cx="50" cy="14" r="1.5" fill="currentColor"/>
+  </svg>`,
+  2: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="22" cy="32" r="12"/>
+    <path d="M22 20 a12 12 0 0 1 10.4 6"/>
+    <path d="M22 20 a12 12 0 0 0 -10.4 6" stroke-dasharray="2 2"/>
+    <rect x="38" y="22" width="18" height="6"/>
+    <rect x="38" y="32" width="18" height="6" stroke-dasharray="2 2"/>
+    <rect x="38" y="42" width="18" height="6"/>
+    <line x1="34" y1="32" x2="38" y2="32"/>
+  </svg>`,
+  3: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="12" y="22" width="40" height="20" rx="10"/>
+    <circle cx="46" cy="32" r="3" fill="currentColor"/>
+    <path d="M14 12 L14 18"/>
+    <path d="M50 12 L50 18"/>
+    <path d="M14 46 L14 52"/>
+    <path d="M50 46 L50 52"/>
+    <path d="M22 12 a4 4 0 0 1 -4 -4"/>
+    <path d="M42 12 a4 4 0 0 0 4 -4"/>
+  </svg>`,
+  4: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="32" cy="32" r="20"/>
+    <path d="M32 18 v14 l10 6"/>
+    <circle cx="32" cy="32" r="2" fill="currentColor"/>
+    <line x1="6" y1="32" x2="12" y2="32"/>
+    <line x1="52" y1="32" x2="58" y2="32"/>
+    <line x1="32" y1="6" x2="32" y2="12"/>
+    <line x1="32" y1="52" x2="32" y2="58"/>
+  </svg>`,
+  5: `<svg viewBox="0 0 64 64" class="lesson-card__schem" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="12" y="10" width="40" height="46" rx="2"/>
+    <rect x="18" y="18" width="6" height="6"/>
+    <line x1="28" y1="21" x2="46" y2="21"/>
+    <rect x="18" y="30" width="6" height="6"/>
+    <line x1="28" y1="33" x2="46" y2="33"/>
+    <rect x="18" y="42" width="6" height="6" stroke-dasharray="2 2"/>
+    <line x1="28" y1="45" x2="46" y2="45"/>
+  </svg>`
+};
+
+/* ─────────────────────────────────────────────────────────
+   LECCIONES
+   ───────────────────────────────────────────────────────── */
+const lessons = [
+  {
+    id: 1,
+    num: "01",
+    title: ["Tu primera ", {em: "página"}, ""],
+    lede: "Aprende las etiquetas HTML básicas construyendo una pequeña tarjeta personal.",
+    duration: "≈ 30 min",
+    level: "Inicial",
+    tags: [{t:"HTML", cls:""}],
+    description: "Una página web no es más que un archivo de texto con etiquetas. Hoy vas a escribir tus primeras líneas de HTML y entender qué hace cada etiqueta.",
+    steps: [
+      { html: "<code>&lt;h1&gt;</code> es la etiqueta más importante del documento: el título principal. Cambia el texto entre las etiquetas por tu nombre." },
+      { html: "Dentro de <code>&lt;p&gt;...&lt;/p&gt;</code> escribe una frase corta sobre ti. El párrafo es el bloque de texto más común de la web." },
+      { html: "En la lista <code>&lt;ul&gt;</code> añade tres <code>&lt;li&gt;</code> con cosas que te gustan: hobbies, comida, música, lo que quieras." },
+      { html: "Pulsa <strong>Ejecutar</strong> para ver el resultado en la vista previa." }
+    ],
+    challenge: "Añade una <code>&lt;img&gt;</code> con una foto tuya (URL de internet) o reemplaza el <code>&lt;h1&gt;</code> por un <code>&lt;h2&gt;</code> y observa cómo cambia el tamaño.",
+    starter: {
+      html: `<h1>Hola, me llamo Ada</h1>
+<p>Soy estudiante y estoy aprendiendo a construir páginas web desde cero.</p>
+
+<h2>Mis cosas favoritas</h2>
+<ul>
+  <li>Leer novelas de ciencia ficción</li>
+  <li>Tocar la guitarra</li>
+  <li>El café por las mañanas</li>
+</ul>`,
+      css: `/* Lección 1: todavía no usamos CSS.
+   Solo escribe tu HTML en la pestaña de arriba. */`,
+      js:  `// Lección 1: JavaScript aparecerá en la lección 3.`
+    }
+  },
+  {
+    id: 2,
+    num: "02",
+    title: ["Dale ", {em: "estilo"}, " a tu página"],
+    lede: "Pinta tu página con CSS: colores, fuentes, márgenes y el modelo de caja.",
+    duration: "≈ 40 min",
+    level: "Inicial",
+    tags: [{t:"HTML", cls:""},{t:"CSS", cls:"teal"}],
+    description: "HTML da la estructura; CSS da la apariencia. Vas a seleccionar elementos y a cambiar su color, tipografía y separación.",
+    steps: [
+      { html: "Un <strong>selector CSS</strong> apunta a un elemento. <code>h1 { ... }</code> cambia el aspecto de todos los <code>&lt;h1&gt;</code>." },
+      { html: "Cambia <code>color</code> y <code>background-color</code> por valores que te gusten. Prueba <code>#c04a2d</code> (rust) o <code>#2d5f5d</code> (teal)." },
+      { html: "Juega con <code>font-family</code>, <code>font-size</code> y <code>font-style: italic</code> para cambiar la tipografía del título." },
+      { html: "En <code>.tarjeta</code> ajusta <code>padding</code> (espacio interior) y <code>margin</code> (espacio exterior). Suma y resta para sentir la diferencia." },
+      { html: "Añade <code>border-radius: 12px</code> en <code>.tarjeta</code> para redondear las esquinas." }
+    ],
+    challenge: "Crea una clase nueva <code>.destacado</code> con fondo amarillo y aplícala a una palabra dentro del párrafo usando <code>&lt;span class=\"destacado\"&gt;</code>.",
+    starter: {
+      html: `<main class="tarjeta">
+  <h1>Hola, me llamo Ada</h1>
+  <p>Soy estudiante y estoy aprendiendo a construir páginas web desde cero.</p>
+  <h2>Mis cosas favoritas</h2>
+  <ul>
+    <li>Leer novelas de ciencia ficción</li>
+    <li>Tocar la guitarra</li>
+    <li>El café por las mañanas</li>
+  </ul>
+</main>`,
+      css: `body {
+  font-family: Georgia, serif;
+  background: #efe9dc;
+  margin: 0;
+  padding: 40px;
+  color: #1c1a15;
+}
+
+h1 {
+  color: #c04a2d;
+  font-size: 2.4rem;
+  margin: 0 0 8px 0;
+}
+
+h2 {
+  color: #2d5f5d;
+  border-bottom: 2px solid #2d5f5d;
+  padding-bottom: 4px;
+}
+
+p, li {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.tarjeta {
+  background: white;
+  padding: 32px;
+  max-width: 520px;
+  margin: 0 auto;
+  border: 1px solid #1c1a15;
+}`,
+      js: `/* Lección 2: aún sin JavaScript. */`
+    }
+  },
+  {
+    id: 3,
+    num: "03",
+    title: ["El botón que ", {em: "responde"}, ""],
+    lede: "Tu primer JavaScript: detecta clics y cambia la página en respuesta.",
+    duration: "≈ 40 min",
+    level: "Intermedio",
+    tags: [{t:"HTML", cls:""},{t:"CSS", cls:"teal"},{t:"JS", cls:"rust"}],
+    description: "JavaScript escucha lo que hace el usuario y modifica la página. Hoy vas a hacer que un botón cambie el color de fondo.",
+    steps: [
+      { html: "En HTML, el botón tiene un <code>onclick=\"cambiarColor()\"</code>. Eso significa: cuando alguien lo pulse, ejecuta la función <code>cambiarColor</code>." },
+      { html: "En JS, <strong>document.body</strong> representa toda la página. <code>document.body.style.background</code> cambia su color de fondo." },
+      { html: "Edita la función para que cambie el color a algo que te guste. Usa colores en formato <code>'#c04a2d'</code> o <code>'lightblue'</code>." },
+      { html: "Añade un segundo botón en HTML con su propio <code>onclick</code> y una función nueva que cambie el color del título." }
+    ],
+    challenge: "Haz que el botón cambie el color a uno <strong>aleatorio</strong> usando <code>Math.random()</code> con tres canales RGB.",
+    starter: {
+      html: `<main class="tarjeta">
+  <h1 id="titulo">Hola, me llamo Ada</h1>
+  <p>Pulsa el botón y mira cómo cambia el fondo.</p>
+  <button onclick="cambiarColor()">Cambiar fondo</button>
+</main>`,
+      css: `body {
+  font-family: Georgia, serif;
+  background: #efe9dc;
+  margin: 0;
+  padding: 40px;
+  transition: background 250ms ease;
+  color: #1c1a15;
+}
+.tarjeta {
+  background: white;
+  padding: 32px;
+  max-width: 520px;
+  margin: 0 auto;
+  border: 1px solid #1c1a15;
+  text-align: center;
+}
+button {
+  background: #1c1a15;
+  color: #efe9dc;
+  border: none;
+  padding: 12px 20px;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: 12px;
+}
+button:hover { background: #c04a2d; }`,
+      js: `function cambiarColor() {
+  // Cambia el color de fondo de toda la página
+  document.body.style.background = '#c04a2d';
+}`
+    }
+  },
+  {
+    id: 4,
+    num: "04",
+    title: ["El ", {em: "contador"}, ""],
+    lede: "JavaScript con memoria: variables, funciones y actualización del DOM.",
+    duration: "≈ 45 min",
+    level: "Intermedio",
+    tags: [{t:"HTML", cls:""},{t:"CSS", cls:"teal"},{t:"JS", cls:"rust"}],
+    description: "Una variable guarda un valor en memoria. Hoy vas a crear un contador que sube, baja y se reinicia, todo con JavaScript.",
+    steps: [
+      { html: "En JS, <code>let cuenta = 0</code> declara una variable y la inicia en cero. Cada clic la modifica." },
+      { html: "<strong>textContent</strong> cambia el texto de un elemento: <code>document.getElementById('numero').textContent = cuenta</code>." },
+      { html: "Escribe las funciones <code>sumar()</code>, <code>restar()</code> y <code>reiniciar()</code>. Recuerda llamar a la línea que actualiza el número en cada una." },
+      { html: "En HTML, conecta los tres botones con sus funciones usando <code>onclick</code>." }
+    ],
+    challenge: "Añade una condición: si <code>cuenta</code> llega a 10, muestra un mensaje de felicitación cambiando el texto del párrafo.",
+    starter: {
+      html: `<main class="tarjeta">
+  <h1>Contador</h1>
+  <p class="numero" id="numero">0</p>
+  <div class="fila">
+    <button onclick="restar()">−</button>
+    <button onclick="reiniciar()">Reiniciar</button>
+    <button onclick="sumar()">+</button>
   </div>
+</main>`,
+      css: `body {
+  font-family: Georgia, serif;
+  background: #efe9dc;
+  margin: 0;
+  padding: 40px;
+  color: #1c1a15;
+  text-align: center;
+}
+.tarjeta {
+  background: white;
+  padding: 40px;
+  max-width: 420px;
+  margin: 0 auto;
+  border: 1px solid #1c1a15;
+}
+.numero {
+  font-size: 6rem;
+  margin: 16px 0;
+  font-variant-numeric: tabular-nums;
+  color: #c04a2d;
+  font-weight: 600;
+}
+.fila {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+button {
+  background: #1c1a15;
+  color: #efe9dc;
+  border: none;
+  padding: 12px 20px;
+  font-family: inherit;
+  cursor: pointer;
+  font-size: 1rem;
+  min-width: 80px;
+}
+button:hover { background: #2d5f5d; }`,
+      js: `let cuenta = 0;
 
-  <p class="footer-note">© Colegio Americano · Plataforma educativa</p>
-</div>
+function actualizar() {
+  document.getElementById('numero').textContent = cuenta;
+}
 
-<script src="js/codes.js"></script>
-<script src="js/landing.js"></script>
+function sumar() {
+  cuenta = cuenta + 1;
+  actualizar();
+}
+
+function restar() {
+  cuenta = cuenta - 1;
+  actualizar();
+}
+
+function reiniciar() {
+  cuenta = 0;
+  actualizar();
+}`
+    }
+  },
+  {
+    id: 5,
+    num: "05",
+    title: ["Tu lista de ", {em: "tareas"}, ""],
+    lede: "Arrays, bucles y render dinámico: tu primera mini-aplicación interactiva.",
+    duration: "≈ 60 min",
+    level: "Avanzado",
+    tags: [{t:"HTML", cls:""},{t:"CSS", cls:"teal"},{t:"JS", cls:"rust"}],
+    description: "Una aplicación real guarda datos en arrays y los dibuja en pantalla. Hoy vas a construir una lista de tareas completa: añadir, completar y borrar.",
+    steps: [
+      { html: "<strong>tareas</strong> es un <em>array</em>: una lista de elementos entre corchetes. Empieza con dos tareas de ejemplo." },
+      { html: "<code>document.getElementById('input').value</code> lee lo que el usuario escribió en el cuadro de texto." },
+      { html: "En <code>agregar()</code>, usa <code>tareas.push(texto)</code> para añadir un elemento al final del array y luego llama a <code>render()</code>." },
+      { html: "<code>render()</code> recorre el array con <code>forEach</code> y, por cada tarea, añade un <code>&lt;li&gt;</code> a la lista <code>&lt;ul&gt;</code>." },
+      { html: "Para borrar, usa <code>tareas.splice(indice, 1)</code> que elimina un elemento en la posición <code>indice</code>." }
+    ],
+    challenge: "Persiste la lista en el navegador con <code>localStorage</code> para que no se borre al recargar la página.",
+    starter: {
+      html: `<main class="tarjeta">
+  <h1>Mis tareas</h1>
+  <div class="fila">
+    <input id="input" type="text" placeholder="Escribe una tarea…" />
+    <button onclick="agregar()">Añadir</button>
+  </div>
+  <ul id="lista"></ul>
+</main>`,
+      css: `body {
+  font-family: Georgia, serif;
+  background: #efe9dc;
+  margin: 0;
+  padding: 40px;
+  color: #1c1a15;
+}
+.tarjeta {
+  background: white;
+  padding: 32px;
+  max-width: 480px;
+  margin: 0 auto;
+  border: 1px solid #1c1a15;
+}
+h1 { margin-top: 0; }
+.fila {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #1c1a15;
+  font-family: inherit;
+  background: #efe9dc;
+}
+button {
+  background: #1c1a15;
+  color: #efe9dc;
+  border: none;
+  padding: 10px 16px;
+  font-family: inherit;
+  cursor: pointer;
+}
+button:hover { background: #c04a2d; }
+ul { list-style: none; padding: 0; margin: 0; }
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dashed rgba(28,26,21,0.2);
+}
+li .texto { flex: 1; cursor: pointer; }
+li.hecho .texto { text-decoration: line-through; color: #7a7361; }
+li button {
+  background: transparent;
+  color: #c04a2d;
+  border: 1px solid #c04a2d;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+}
+li button:hover { background: #c04a2d; color: white; }`,
+      js: `let tareas = ['Aprender HTML', 'Aprender CSS'];
+
+function render() {
+  const lista = document.getElementById('lista');
+  lista.innerHTML = '';
+  tareas.forEach((texto, indice) => {
+    const li = document.createElement('li');
+    li.innerHTML = \`
+      <span class="texto" onclick="completar(\${indice})">\${texto}</span>
+      <button onclick="borrar(\${indice})">Borrar</button>
+    \`;
+    lista.appendChild(li);
+  });
+}
+
+function agregar() {
+  const input = document.getElementById('input');
+  const texto = input.value.trim();
+  if (texto === '') return;
+  tareas.push(texto);
+  input.value = '';
+  render();
+}
+
+function borrar(indice) {
+  tareas.splice(indice, 1);
+  render();
+}
+
+function completar(indice) {
+  const items = document.querySelectorAll('#lista li');
+  items[indice].classList.toggle('hecho');
+}
+
+render();`
+    }
+  }
+];
+
+/* ─────────────────────────────────────────────────────────
+   RENDER DEL LANDING
+   ───────────────────────────────────────────────────────── */
+function titleHtml(titleArr) {
+  return titleArr.map(part =>
+    typeof part === 'string' ? part : `<em>${part.em}</em>`
+  ).join('');
+}
+
+function tagsHtml(tags) {
+  return tags.map(t => `<span class="tag ${t.cls ? 'tag--'+t.cls : ''}">${t.t}</span>`).join('');
+}
+
+function renderLanding() {
+  const grid = document.getElementById('lessonsGrid');
+  grid.innerHTML = lessons.map(l => `
+    <button class="lesson-card" data-id="${l.id}" type="button">
+      <span class="lesson-card__num">Lección ${l.num}</span>
+      ${schematics[l.id]}
+      <h3 class="lesson-card__title">${titleHtml(l.title)}</h3>
+      <p class="lesson-card__lede">${l.lede}</p>
+      <div class="lesson-card__tags">${tagsHtml(l.tags)}</div>
+      <span class="lesson-card__cta">Abrir lección <span class="lesson-card__arrow">→</span></span>
+    </button>
+  `).join('');
+
+  grid.querySelectorAll('.lesson-card').forEach(card => {
+    card.addEventListener('click', () => openLesson(Number(card.dataset.id)));
+  });
+}
+
+/* ─────────────────────────────────────────────────────────
+   VISTA DE LECCIÓN
+   ───────────────────────────────────────────────────────── */
+let currentLesson = null;
+let activeTab = 'html';
+
+function openLesson(id) {
+  const l = lessons.find(x => x.id === id);
+  if (!l) return;
+  currentLesson = l;
+
+  document.getElementById('landing').hidden = true;
+  document.getElementById('lessonView').hidden = false;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  // Header
+  document.getElementById('lhNum').textContent = `Lección ${l.num} · ${l.level} · ${l.duration}`;
+  document.getElementById('lhTitle').innerHTML = titleHtml(l.title);
+  document.getElementById('lhDesc').textContent = l.description;
+  document.getElementById('lhSpecs').innerHTML = `
+    <div><dt>Stack</dt><dd>${l.tags.map(t => t.t).join(' · ')}</dd></div>
+    <div><dt>Nivel</dt><dd>${l.level}</dd></div>
+    <div><dt>Duración</dt><dd>${l.duration}</dd></div>
+  `;
+
+  // Steps
+  document.getElementById('stepsList').innerHTML = l.steps.map(s =>
+    `<li class="step"><div class="step__body"><p>${s.html}</p></div></li>`
+  ).join('');
+
+  // Challenge
+  if (l.challenge) {
+    document.getElementById('challenge').hidden = false;
+    document.getElementById('challengeBody').innerHTML = l.challenge;
+  } else {
+    document.getElementById('challenge').hidden = true;
+  }
+
+  // Tabs: ocultar los que no apliquen
+  const hasCSS = l.starter.css && !/Lección\s*\d/.test(l.starter.css.trim().slice(0, 30));
+  const hasJS  = l.starter.js  && !/Lección\s*\d/.test(l.starter.js.trim().slice(0, 30));
+  document.querySelector('.tab[data-tab="css"]').hidden = !hasCSS;
+  document.querySelector('.tab[data-tab="js"]').hidden  = !hasJS;
+
+  // Activar primera pestaña disponible
+  activeTab = 'html';
+  if (!hasCSS && hasJS) activeTab = 'js';
+  setActiveTab(activeTab);
+  loadActiveTab();
+
+  runPreview();
+}
+
+function setActiveTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab').forEach(t => {
+    t.setAttribute('aria-selected', t.dataset.tab === tab ? 'true' : 'false');
+  });
+  const fileName = tab === 'html' ? 'index.html'
+                  : tab === 'css'  ? 'estilos.css'
+                  : 'script.js';
+  document.getElementById('fileName').textContent = fileName;
+}
+
+function loadActiveTab() {
+  const ta = document.getElementById('codeArea');
+  ta.value = currentLesson.starter[activeTab] || '';
+}
+
+function closeLesson() {
+  document.getElementById('lessonView').hidden = true;
+  document.getElementById('landing').hidden = false;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+/* ─────────────────────────────────────────────────────────
+   LIVE PREVIEW
+   ───────────────────────────────────────────────────────── */
+const previewMessages = [];
+function paintPreviewConsole() { paintConsole(previewMessages); }
+
+window.addEventListener('message', (ev) => {
+  if (!ev.data || typeof ev.data !== 'object' || !ev.data.__lw) return;
+  previewMessages.push([ev.data.kind || 'log', ev.data.msg || '']);
+  paintPreviewConsole();
+});
+
+function runPreview() {
+  const l = currentLesson;
+  if (!l) return;
+  const html = l.starter.html || '';
+  const css  = l.starter.css  || '';
+  const js   = l.starter.js   || '';
+
+  previewMessages.length = 0;
+  paintPreviewConsole();
+
+  const source = `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+  body { margin: 16px; font-family: system-ui, sans-serif; }
+${css}
+</style>
+</head>
+<body>
+${html}
+<script>
+(function(){
+  function send(kind, args){
+    try {
+      var msg = Array.prototype.slice.call(args).map(function(a){
+        if (a === null) return 'null';
+        if (a === undefined) return 'undefined';
+        if (typeof a === 'object') { try { return JSON.stringify(a); } catch(e) { return String(a); } }
+        return String(a);
+      }).join(' ');
+      parent.postMessage({ __lw: true, kind: kind, msg: msg }, '*');
+    } catch(e){}
+  }
+  window.console = {
+    log:   function(){ send('log',   arguments); },
+    warn:  function(){ send('warn',  arguments); },
+    error: function(){ send('error', arguments); }
+  };
+  window.addEventListener('error', function(e){
+    send('error', [e.message + ' (' + (e.filename||'?') + ':' + (e.lineno||'?') + ')']);
+  });
+  try {
+${js}
+  } catch (e) {
+    send('error', [e.message]);
+  }
+})();
+<\/script>
+</body>
+</html>`;
+
+  const blob = new Blob([source], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const iframe = document.getElementById('preview');
+  const old = iframe.src;
+  iframe.src = url;
+  setTimeout(() => { try { URL.revokeObjectURL(old); } catch(e){} }, 1500);
+}
+
+function stringify(v) {
+  if (v === null) return 'null';
+  if (v === undefined) return 'undefined';
+  if (typeof v === 'object') {
+    try { return JSON.stringify(v); } catch(e) { return String(v); }
+  }
+  return String(v);
+}
+
+function paintConsole(lines) {
+  const el = document.getElementById('console');
+  if (!lines.length) {
+    el.innerHTML = '<span class="console__line">— Vacía —</span>';
+    return;
+  }
+  el.innerHTML = lines.map(([k, msg]) =>
+    `<span class="console__line ${k==='error'?'console__line--err':''}">› ${escapeHtml(msg)}</span>`
+  ).join('');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+}
+
+/* ─────────────────────────────────────────────────────────
+   EVENTOS
+   ───────────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  renderLanding();
+  document.getElementById('backBtn').addEventListener('click', closeLesson);
+  document.getElementById('runBtn').addEventListener('click', runPreview);
+
+  document.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => {
+      if (t.hidden) return;
+      setActiveTab(t.dataset.tab);
+      loadActiveTab();
+    });
+  });
+
+  document.getElementById('codeArea').addEventListener('input', (e) => {
+    if (!currentLesson) return;
+    currentLesson.starter[activeTab] = e.target.value;
+  });
+
+  document.getElementById('codeArea').addEventListener('keydown', (e) => {
+    // Tab inserta dos espacios
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const ta = e.target;
+      const s = ta.selectionStart, end = ta.selectionEnd;
+      ta.value = ta.value.slice(0, s) + '  ' + ta.value.slice(end);
+      ta.selectionStart = ta.selectionEnd = s + 2;
+      currentLesson.starter[activeTab] = ta.value;
+    }
+    // Ctrl/⌘ + Enter ejecuta
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      runPreview();
+    }
+  });
+});
+</script>
 </body>
 </html>
