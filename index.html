@@ -1401,12 +1401,14 @@ ${html}
   window.addEventListener('error', function(e){
     send('error', [e.message + ' (' + (e.filename||'?') + ':' + (e.lineno||'?') + ')']);
   });
-  try {
-${js}
-  } catch (e) {
-    send('error', [e.message]);
-  }
 })();
+<\/script>
+<script>
+try {
+${js}
+} catch (e) {
+  parent.postMessage({ __lw: true, kind: 'error', msg: e.message }, '*');
+}
 <\/script>
 </body>
 </html>`;
